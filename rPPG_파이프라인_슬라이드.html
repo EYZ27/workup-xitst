@@ -70,7 +70,7 @@
     border-radius:10px;
     padding:14px 6px;
     text-align:center;
-    font-size:12px;
+    font-size:16px;
     line-height:1.35;
     flex:1;
     display:flex;
@@ -228,7 +228,7 @@
     <div class="section-tag">2. rPPG 이해 및 성능 저하 원인 구조</div>
     <h2>rPPG 이해 및 rPPG 측정 파이프라인</h2>
     <div class="subtitle">배경 원리와 전체 파이프라인 구조</div>
-    <ul style="font-size:14px;line-height:1.6;margin-bottom:4px;">
+    <ul style="font-size:16px;line-height:1.9;margin-bottom:4px;">
       <li><b>정의</b> — 카메라로 촬영한 얼굴 영상에서 심장 박동에 따라 발생하는 미세한 피부색 변화를 분석해 생체신호를 추정하는 비접촉 측정 기술</li>
       <li><b>원리</b> — 모세혈관 혈류량 변화에 따라 피부 반사광 스펙트럼(녹색 파장 대역)이 미세하게(약 0.5% 이내) 변화한다</li>
       <li><b>근본 난이도</b> — 신호 대 잡음비(SNR)가 극히 낮아, 이후 모든 파이프라인 단계의 오차가 이 미세 신호를 쉽게 덮어버릴 수 있다</li>
@@ -236,40 +236,40 @@
     <div class="flow" style="margin-top:16px;">
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
-        <span>① 영상 촬영<br>/ 수집</span>
+        <span><b>① 영상 촬영<br>/ 수집</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 0-1 1h-3"/><circle cx="12" cy="11" r="3"/></svg>
-        <span>② 얼굴·ROI<br>검출/추적</span>
+        <span><b>② 얼굴·ROI<br>검출/추적</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><path d="M3 12h3l2-6 3 12 2-8 2 5h6"/></svg>
-        <span>③ 원시 신호<br>추출</span>
+        <span><b>③ 원시 신호<br>추출</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="9" cy="7" r="2.2"/><circle cx="15" cy="12" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg>
-        <span>④ 신호<br>전처리</span>
+        <span><b>④ 신호<br>전처리</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>
-        <span>⑤ rPPG<br>신호 추정</span>
+        <span><b>⑤ rPPG<br>신호 추정</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><path d="M20.8 7.6a5 5 0 0 0-8.8-1.6A5 5 0 0 0 3.2 7.6c-.9 2.4.6 4.7 2.3 6.4L12 20l6.5-6c1.7-1.7 3.2-4 2.3-6.4z"/><path d="M6.5 12H9l1.5-3 2 5 1.3-2h2.7"/></svg>
-        <span>⑥ 후처리<br>(BPM 산출)</span>
+        <span><b>⑥ 후처리<br>(BPM 산출)</b></span>
       </div>
       <div class="arrow">&#8594;</div>
       <div class="step">
         <svg class="picon" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg>
-        <span>⑦ GT 동기화<br>/ 평가</span>
+        <span><b>⑦ GT 동기화<br>/ 평가</b></span>
       </div>
     </div>
-    <div class="highlight-box" style="margin-top:20px;">각 단계 전환 지점(화살표)이 곧 <b>"이 지점에서 정보가 왜곡·손실될 수 있는가"</b>라는 가설의 원천이 된다.</div>
+    <div class="highlight-box" style="margin-top:20px;">각 단계 전환 지점이 곧 <b>"이 지점에서 정보가 왜곡·손실될 수 있는가"</b>라는 가설의 원천이 된다.</div>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
     <div class="pagenum">3</div>
   </section>
