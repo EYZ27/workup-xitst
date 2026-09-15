@@ -542,7 +542,7 @@
     <table class="design-table">
       <tr>
         <td class="k k-base">실험 설계</td>
-        <td><b>데이터 범위 정의</b> 자체 수집 데이터셋 전체(피험자 수·환경 조건 명시) &nbsp;<span class="arrow-step">→</span>&nbsp; <b>데이터 분할</b> subject-independent train/val/test(예 60/20/20), 조명·기기·피부톤 층화 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>웹앱 조건 고정</b> FPS·해상도·압축 코덱을 실서비스와 동일하게 고정 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>비교 모델 선정</b> 전통기법(CHROM/POS)+현재 딥러닝 모델을 동일 조건에서 평가 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>절차 고정</b> 전처리·평가 스크립트화(고정 시드·버전관리)</td>
+        <td><b>데이터 범위 정의</b> 자체 수집 데이터셋 전체(피험자 수·환경 조건 명시) &nbsp;<span class="arrow-step">→</span>&nbsp; <b>데이터 분할</b> subject-independent train/val/test(예 60/20/20), 조명·기기·피부톤 층화 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>웹앱 조건 고정</b> FPS·해상도·압축 코덱을 실서비스와 동일하게 고정 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>비교 모델 선정·평가</b> 전통기법(CHROM/POS)+현재 딥러닝 모델을 동일 조건에서 나란히 평가 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>절차 고정</b> 전처리·평가 스크립트화(고정 시드·버전관리)</td>
       </tr>
       <tr>
         <td class="k k-base">평가 지표</td>
@@ -592,8 +592,8 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
-        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 기존 관행(학습·테스트 세트 불일치, 신뢰 불가 라벨의 임의 필터링)이 보고 성능을 실제 일반화와 괴리시킨다고 지적하고, <b>cross-dataset 평가(한 데이터셋 학습 → 다른 데이터셋 평가)</b>를 표준 프로토콜로 제시. &nbsp;|&nbsp; <span class="src">remotebiosensing/rppg</span> — 공정 평가용 국내 벤치마크 프레임워크.</td>
+        <td class="k k-ref">근거</td>
+        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 기존 관행(학습·테스트 세트 불일치, 신뢰 불가 라벨의 임의 필터링)이 보고 성능을 실제 일반화와 괴리시킨다고 지적하고, <b>cross-dataset 평가(한 데이터셋 학습 → 다른 데이터셋 평가)</b>를 표준 프로토콜로 제시. <br><span class="src">remotebiosensing/rppg</span> — 공정 평가용 국내 벤치마크 프레임워크.</td>
       </tr>
     </table>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
@@ -625,7 +625,7 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
+        <td class="k k-ref">근거</td>
         <td class="ref"><span class="src">Mironenko et al. (2020), "Rarely Considered Factors", CVPRW</span> — <b>롤링 셔터</b>로 최대 0.02초 위상 편이 발생(심박 위상 이동과 동급 크기), <b>시간 윈도우 크기</b>에 따라 산출 HR이 최대 4–10 bpm 차이 → 비교 실험 시 윈도우·동기화 조건 명시 필요. (동일 연구는 불규칙 프레임레이트의 영향은 미미하다고도 보고)</td>
       </tr>
     </table>
@@ -658,7 +658,7 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
+        <td class="k k-ref">근거</td>
         <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 모델·전처리·후처리·하드웨어가 섞여 성능차 원인을 특정할 수 없는 <b>"apples vs oranges" 비교 문제</b>를 명시하고, 입력 정규화 3종(Raw/Standardized/DiffNormalized)·얼굴 크롭 방식·후처리(Butterworth 0.75–2.5Hz→FFT/피크)를 표준화 → 전처리 일치성 검증의 <b>참조 구현</b>으로 활용 가능.</td>
       </tr>
     </table>
@@ -691,7 +691,7 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
+        <td class="k k-ref">근거</td>
         <td class="ref"><span class="src">"Optimal signal quality index for rPPG" (2024), npj Biosensing</span> — 8종 SQI 비교 검증에서 <b>SNR 기반 NSQI</b>가 품질 구간 판별에 최우수, <b>임계값 NSQI &lt; 0.293</b>에서 고품질 구간을 효과적으로 선별(Leave-one-out 교차검증) → 임계값 스윕 실험의 구체 출발점. &nbsp;|&nbsp; <span class="src">Reliability factor for rPPG (ACM, 2023)</span> — 신뢰도 지표 기반 결과 게이팅.</td>
       </tr>
     </table>
@@ -724,7 +724,7 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
+        <td class="k k-ref">근거</td>
         <td class="ref"><span class="src">Odinaev et al. (2023), "Optimizing Camera Exposure Control", CVPRW</span> — <b>고정 노출이 자동 노출보다 항상 같거나 우수</b>(자동 노출은 생체신호가 아닌 화면 밝기 기준으로 조정). 밝기 [50,200]서 MAE &lt; 5 bpm(25 lux 저조도 포함), 노출시간 1/16초에서 최적(상관 ~20%↑) → 고정 vs 자동 대조 수집 설계와 방법론 일치. &nbsp;|&nbsp; <span class="src">Dedicated Exposure Control (IEEE, 2020)</span> — rPPG 전용 노출 제어기.</td>
       </tr>
     </table>
