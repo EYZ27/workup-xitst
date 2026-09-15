@@ -570,8 +570,8 @@
   <!-- Slide 9: 데이터 분할 누수·편향 -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2><span class="hnum">#3</span> 데이터 분할 누수·편향 — 실험 설계</h2>
-    <div class="subtitle">기존 성능이 착시(과대평가)인지 먼저 판별</div>
+    <h2><span class="hnum">#3</span> 데이터 분할 누수·편향</h2>
+    <div class="subtitle">기존 성능의 과대평가 여부 판별</div>
     <table class="design-table">
       <tr>
         <td class="k">실험 설계</td>
@@ -603,8 +603,8 @@
   <!-- Slide 10: 타임스탬프 동기화 오차 -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2><span class="hnum">#5</span> 타임스탬프 동기화 오차 — 실험 설계</h2>
-    <div class="subtitle">"모델이 아닌 채점의 오류" 배제</div>
+    <h2><span class="hnum">#5</span> 타임스탬프 동기화 오차</h2>
+    <div class="subtitle">동기화 오차(offset·드리프트)가 지표를 왜곡하는지 판별</div>
     <table class="design-table">
       <tr>
         <td class="k">실험 설계</td>
@@ -636,8 +636,8 @@
   <!-- Slide 11: train↔inference 전처리 불일치 -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2><span class="hnum">#4</span> train↔inference 전처리 불일치 — 실험 설계</h2>
-    <div class="subtitle">모델을 손대기 전, 저비용·고효과 항목 배제</div>
+    <h2><span class="hnum">#4</span> train↔inference 전처리 불일치</h2>
+    <div class="subtitle">모델 실험 전, 저비용·고효과 항목부터 먼저 검증</div>
     <table class="design-table">
       <tr>
         <td class="k">실험 설계</td>
@@ -669,8 +669,8 @@
   <!-- Slide 12: 실패 샘플 처리·SQI -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2><span class="hnum">#6</span> 실패 샘플 처리·SQI 부재 — 실험 설계</h2>
-    <div class="subtitle">실패가 평균 오차를 부풀리는지 분리해 확인</div>
+    <h2><span class="hnum">#6</span> 실패 샘플 처리·SQI 부재</h2>
+    <div class="subtitle">실패가 평균 오차를 부풀리는지 확인</div>
     <table class="design-table">
       <tr>
         <td class="k">실험 설계</td>
@@ -692,7 +692,7 @@
       </tr>
       <tr>
         <td class="k k-ref">근거</td>
-        <td class="ref"><span class="src">"Optimal signal quality index for rPPG" (2024), npj Biosensing</span> — 8종 SQI 비교 검증에서 <b>SNR 기반 NSQI</b>가 품질 구간 판별에 최우수, <b>임계값 NSQI &lt; 0.293</b>에서 고품질 구간을 효과적으로 선별(Leave-one-out 교차검증) → 임계값 스윕 실험의 구체 출발점. &nbsp;|&nbsp; <span class="src">Reliability factor for rPPG (ACM, 2023)</span> — 신뢰도 지표 기반 결과 게이팅.</td>
+        <td class="ref"><span class="src">"Optimal signal quality index for rPPG" (2024), npj Biosensing</span> — 8종 SQI 비교 검증에서 <b>SNR 기반 NSQI</b>가 품질 구간 판별에 최우수, <b>임계값 NSQI &lt; 0.293</b>에서 고품질 구간을 효과적으로 선별(Leave-one-out 교차검증) → 임계값 스윕 실험의 구체 출발점. <br><span class="src">Reliability factor for rPPG (ACM, 2023)</span> — 신뢰도 지표 기반 결과 게이팅.</td>
       </tr>
     </table>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
@@ -702,7 +702,7 @@
   <!-- Slide 13: 자동 노출/화이트밸런스 -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2><span class="hnum">#1</span> 자동 노출/화이트밸런스(AWB) — 실험 설계</h2>
+    <h2><span class="hnum">#1</span> 자동 노출/화이트밸런스(AWB)</h2>
     <div class="subtitle">파이프라인·평가 오류 배제 후 남는 실제 환경 원인 규명</div>
     <table class="design-table">
       <tr>
@@ -725,7 +725,7 @@
       </tr>
       <tr>
         <td class="k k-ref">근거</td>
-        <td class="ref"><span class="src">Odinaev et al. (2023), "Optimizing Camera Exposure Control", CVPRW</span> — <b>고정 노출이 자동 노출보다 항상 같거나 우수</b>(자동 노출은 생체신호가 아닌 화면 밝기 기준으로 조정). 밝기 [50,200]서 MAE &lt; 5 bpm(25 lux 저조도 포함), 노출시간 1/16초에서 최적(상관 ~20%↑) → 고정 vs 자동 대조 수집 설계와 방법론 일치. &nbsp;|&nbsp; <span class="src">Dedicated Exposure Control (IEEE, 2020)</span> — rPPG 전용 노출 제어기.</td>
+        <td class="ref"><span class="src">Odinaev et al. (2023), "Optimizing Camera Exposure Control", CVPRW</span> — <b>고정 노출이 자동 노출보다 항상 같거나 우수</b>(자동 노출은 생체신호가 아닌 화면 밝기 기준으로 조정). 밝기 [50,200]서 MAE &lt; 5 bpm(25 lux 저조도 포함), 노출시간 1/16초에서 최적(상관 ~20%↑) → 고정 vs 자동 대조 수집 설계와 방법론 일치. <br><span class="src">Dedicated Exposure Control (IEEE, 2020)</span> — rPPG 전용 노출 제어기.</td>
       </tr>
     </table>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
@@ -819,41 +819,59 @@
     <div class="pagenum">15</div>
   </section>
 
-  <!-- Slide 16: 종합 요약 -->
+  <!-- Slide 16: 3개월 이후 전망 -->
   <section class="slide">
-    <div class="section-tag">7. 종합 요약</div>
-    <h2>종합 요약 — 무엇을, 왜, 어떤 순서로</h2>
-    <div class="subtitle">"성능 저하 = 모델 한계"로 성급히 단정하지 않고, 병목을 순서대로 배제한다</div>
-    <div class="sum-grid">
+    <div class="section-tag">7. 3개월 이후 전망</div>
+    <h2>3개월 이후 전망</h2>
+    <div class="subtitle">이번 계획의 산출물이 반복 가능한 개선 사이클로 이어진다</div>
+
+    <div class="flow" style="margin-top:14px;">
+      <div class="step" style="font-size:13px;">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg>
+        <span><b>이번 계획 산출물</b><br>baseline·병목 규명<br>의사결정 기준</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step" style="font-size:13px;">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/><circle cx="12" cy="12" r="3.2"/></svg>
+        <span><b>규명된 병목<br>집중 개선</b><br>추측 아닌 근거로</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step" style="font-size:13px;">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>효과 재검증</b><br>동일 지표·수용 기준<br>으로 판정</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step" style="font-size:13px;">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
+        <span><b>다음 사이클</b><br>운영 품질 기준을<br>제품에 반영·반복</span>
+      </div>
+    </div>
+
+    <div class="sum-grid" style="margin-top:20px;">
       <div class="sum-card">
-        <h3>핵심 접근</h3>
+        <h3>연구개발 조직</h3>
         <ul>
-          <li>재현 가능한 <b>baseline</b>을 먼저 확립해 "채점"을 신뢰 가능하게</li>
-          <li>저비용·고ROI <b>평가·파이프라인 오류</b>부터 배제</li>
-          <li>남는 <b>실제 환경 원인</b>(AWB 등)을 겨냥</li>
-          <li><b>모델 재학습은 마지막</b> — 예비 기간에 결과 보고 판단</li>
+          <li>추측이 아니라 <b>근거로</b> 개선 우선순위를 정한다</li>
+          <li>모델 재학습·도메인 적응 여부를 <b>데이터로</b> 판단</li>
         </ul>
       </div>
       <div class="sum-card">
-        <h3>3개월 산출물</h3>
+        <h3>서비스 운영자</h3>
         <ul>
-          <li>웹앱 조건에서 <b>재현 가능한 baseline 성능·비교 조건</b></li>
-          <li>우선 5개 가설의 <b>검증 결과와 병목 규명</b></li>
-          <li>지표별 <b>수용 기준과 결과별 의사결정 기준</b></li>
-          <li>협업·위험 대응을 포함한 <b>실행 계획서</b></li>
+          <li><b>재현 가능한 기준</b>으로 성능·품질을 판단</li>
+          <li>SQI·성공률 기준을 <b>운영 지표</b>로 활용</li>
         </ul>
       </div>
       <div class="sum-card">
-        <h3>의사결정 원칙</h3>
+        <h3>사용자</h3>
         <ul>
-          <li>각 실험은 <b>수용 기준</b>으로 채택·기각 판정</li>
-          <li>가설 기각 시 <b>다음 후보</b>로 전환</li>
-          <li>지표는 <b>MAE+bias+Bland-Altman+성공률</b> 병행</li>
-          <li>문헌 수치는 초기값, <b>자체 데이터로 재튜닝</b></li>
+          <li>측정 실패·오차가 줄어 <b>결과 신뢰도</b>가 오른다</li>
+          <li>안정적인 <b>비접촉 측정 경험</b>으로 이어진다</li>
         </ul>
       </div>
     </div>
-    <div class="highlight-box"><b>한 줄 결론</b> — 신뢰할 수 있는 채점 → 싼 검증 → 비싼 검증 → (필요 시) 모델. 이 순서가 곧 영향도·불확실성·실행비용을 반영한 우선순위다.</div>
+
+    <div class="highlight-box"><b>맺음</b> — 이번 3개월은 일회성 진단이 아니라, <b>재현 가능한 baseline과 의사결정 기준 위에서 돌아가는 개선 사이클의 첫 바퀴</b>다. 같은 틀로 이후의 어떤 개선도 검증할 수 있다.</div>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
     <div class="pagenum">16</div>
   </section>
