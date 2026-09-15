@@ -454,7 +454,7 @@
     </div>
 
     <div class="tl-row r-base">
-      <div class="tl-label"><b>Baseline 설정</b><br><span class="m">평가 파이프라인·비교조건 고정</span></div>
+      <div class="tl-label"><b><span class="hnum">#0</span> Baseline 설정</b><br><span class="m">평가 파이프라인·비교조건 고정</span></div>
       <div class="tl-track"><div class="tl-bar b-base" style="left:0%;width:16.667%;">1–2주</div></div>
     </div>
     <div class="tl-row r-hyp">
@@ -499,7 +499,7 @@
         <th style="text-align:left;width:290px;">기대 산출물</th>
       </tr>
       <tr>
-        <td style="border-left:5px solid #1638b0;"><b>Baseline 설정</b></td>
+        <td style="border-left:5px solid #1638b0;"><b><span class="hnum">#0</span> Baseline 설정</b></td>
         <td>(1) 데이터 범위·train/val/test 분할 규칙 확정 → (2) 웹앱 조건(FPS·해상도·압축) 정의 → (3) 비교 모델(CHROM/POS·딥러닝) 고정 → (4) 평가 스크립트(MAE·RMSE·bias·Bland-Altman·성공률) 구현</td>
         <td>재현 가능한 평가 파이프라인, baseline 성능표·비교 조건 문서</td>
       </tr>
@@ -537,12 +537,12 @@
   <!-- Slide 8: Baseline 설정 설계 -->
   <section class="slide">
     <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
-    <h2>Baseline 설정 설계</h2>
+    <h2><span class="hnum">#0</span> Baseline 설정 설계</h2>
     <div class="subtitle">모든 개선 실험의 기준선이 되는 재현 가능한 평가 체계 확립</div>
     <table class="design-table">
       <tr>
         <td class="k k-base">실험 설계</td>
-        <td><b>데이터 범위</b> 자체 수집 데이터셋 전체(피험자 수·환경 조건 명시) &nbsp;<span class="arrow-step">→</span>&nbsp; <b>분할</b> subject-independent train/val/test(예 60/20/20), 조명·기기·피부톤 층화 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>웹앱 조건</b> FPS·해상도·압축 코덱을 실서비스와 동일하게 고정 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>비교 모델</b> 전통기법(CHROM/POS)+현재 딥러닝 모델을 동일 조건에서 평가 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>절차 고정</b> 전처리·평가 스크립트화(고정 시드·버전관리)</td>
+        <td><b>데이터 범위 정의</b> 자체 수집 데이터셋 전체(피험자 수·환경 조건 명시) &nbsp;<span class="arrow-step">→</span>&nbsp; <b>데이터 분할</b> subject-independent train/val/test(예 60/20/20), 조명·기기·피부톤 층화 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>웹앱 조건 고정</b> FPS·해상도·압축 코덱을 실서비스와 동일하게 고정 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>비교 모델 선정</b> 전통기법(CHROM/POS)+현재 딥러닝 모델을 동일 조건에서 평가 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>절차 고정</b> 전처리·평가 스크립트화(고정 시드·버전관리)</td>
       </tr>
       <tr>
         <td class="k k-base">평가 지표</td>
@@ -559,8 +559,8 @@
         </td>
       </tr>
       <tr>
-        <td class="k k-ref">근거자료</td>
-        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 입력 정규화 3종·Butterworth 0.75–2.5Hz 필터·FFT/피크 BPM 산출·cross-dataset 평가를 <b>재현 가능 baseline의 표준 프로토콜(reference implementation)</b>로 제시. &nbsp;|&nbsp; <span class="src">Elgendi et al. (2026), npj Digital Medicine</span> — HR 지표(MAE·RMSE·Bland-Altman) + 신호수준 지표(PCC·SNR)를 함께 보는 <b>다중 지표 평가</b> 권고.</td>
+        <td class="k k-ref">근거</td>
+        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 입력 정규화 3종·Butterworth 0.75–2.5Hz 필터·FFT/피크 BPM 산출·cross-dataset 평가를 <b>재현 가능 baseline의 표준 프로토콜(reference implementation)</b>로 제시. <br> <span class="src">Elgendi et al. (2026), npj Digital Medicine</span> — HR 지표(MAE·RMSE·Bland-Altman) + 신호수준 지표(PCC·SNR)를 함께 보는 <b>다중 지표 평가</b> 권고.</td>
       </tr>
     </table>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
