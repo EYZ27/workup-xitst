@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>rPPG 성능 정체 원인 분석 및 개선 실험계획서</title>
+<style>
+  :root{
+    --accent:#2454ff;
+    --accent-dark:#1638b0;
+    --text:#1a1f2b;
+    --muted:#5b6472;
+    --bg:#eef1f5;
+    --card:#ffffff;
+    --line:#dde2e8;
+    --soft:#f3f6fb;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    background:var(--bg);
+    font-family:'Malgun Gothic','Segoe UI',sans-serif;
+    color:var(--text);
+  }
+  .deck{
+    padding:24px 0 40px 0;
+  }
+  .slide{
+    width:13.333in;
+    height:7.5in;
+    margin:0 auto 24px auto;
+    background:var(--card);
+    box-shadow:0 4px 18px rgba(0,0,0,.14);
+    padding:0.65in 0.85in;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .kicker{
+    color:var(--accent);
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1{font-size:32px;margin:0 0 10px 0;line-height:1.3;}
+  h2{font-size:24px;margin:0 0 4px 0;color:var(--accent-dark);}
+  .subtitle{color:var(--muted);font-size:15px;margin:0 0 22px 0;}
+  .section-tag{
+    display:inline-block;
+    background:var(--soft);
+    color:var(--accent-dark);
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:4px;
+    margin-bottom:14px;
+    letter-spacing:.03em;
+  }
+  table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;line-height:1.5;}
+  th{background:var(--soft);color:var(--accent-dark);font-size:13.5px;}
+  .pagenum{position:absolute;bottom:0.4in;right:0.85in;color:var(--muted);font-size:11px;}
+  .footer-brand{position:absolute;bottom:0.4in;left:0.85in;color:var(--muted);font-size:11px;}
+  .flow{display:flex;align-items:stretch;justify-content:space-between;gap:6px;margin-top:10px;}
+  .flow .step{
+    background:var(--soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 6px;
+    text-align:center;
+    font-size:12px;
+    line-height:1.35;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+  }
+  .flow .step .picon{width:30px;height:30px;color:var(--accent);}
+  .flow .arrow{color:var(--accent);font-size:16px;flex:0 0 auto;display:flex;align-items:center;}
+  .picon{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .picon.filled{fill:currentColor;stroke:none;}
+  td .picon{width:22px;height:22px;color:var(--accent);vertical-align:middle;margin-right:8px;flex:0 0 auto;}
+  .stage-cell{display:flex;align-items:center;gap:2px;}
+  .detail-table td,.detail-table th{padding:7px 11px;line-height:1.4;}
+  .hyp-table td,.hyp-table th{padding:7px 10px;line-height:1.35;font-size:13px;}
+  .hyp-table th{text-align:center;}
+  .hyp-table td.c{text-align:center;}
+  .pick-row td{background:#eaf1ff;}
+  .pick-row td:first-child{box-shadow:inset 4px 0 0 var(--accent);}
+  .pill{display:inline-block;min-width:34px;padding:2px 8px;border-radius:11px;font-size:12px;font-weight:700;}
+  .lv-high{background:#ffe1dd;color:#c0362c;}
+  .lv-mid{background:#fdefcf;color:#9a6b00;}
+  .lv-low{background:#dcf1e2;color:#1f7a3d;}
+  .pick-tag{display:inline-block;background:var(--accent);color:#fff;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+  .legend{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6;}
+  .reason-card{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;background:#f7faff;padding:10px 14px;margin-bottom:9px;}
+  .reason-card .rc-title{font-size:14.5px;font-weight:700;color:var(--accent-dark);margin-bottom:3px;}
+  .reason-card .rc-body{font-size:13px;line-height:1.5;color:var(--text);}
+  .g-monthband{display:flex;margin-left:318px;margin-right:0;margin-bottom:5px;}
+  .g-month{flex:1;text-align:center;font-size:15px;font-weight:700;color:var(--accent-dark);background:var(--soft);border-radius:4px;margin:0 2px;padding:3px 0;}
+  .g-weekrow{display:flex;align-items:center;margin-bottom:9px;}
+  .g-wklabel{width:318px;flex:0 0 auto;font-size:14px;color:var(--muted);padding-left:12px;padding-right:6px;display:flex;justify-content:space-between;align-items:center;}
+  .g-wktrack{flex:1;display:flex;margin-right:0;}
+  .g-wk{flex:1;text-align:center;font-size:13px;color:var(--muted);border-left:1px solid var(--line);}
+  .g-wk:last-child{border-right:1px solid var(--line);}
+  .tl-row{display:flex;align-items:center;margin-bottom:7px;border-radius:6px;padding:4px 0;}
+  .tl-row.r-base{background:#e6edfa;}
+  .tl-row.r-hyp{background:#eef4ff;}
+  .tl-row.r-buffer{background:#eceff3;}
+  .tl-label{width:318px;flex:0 0 auto;font-size:15.5px;line-height:1.25;padding:0 6px 0 12px;}
+  .tl-label b{color:var(--accent-dark);}
+  .tl-label .m{color:var(--muted);font-size:13.5px;}
+  .tl-track{position:relative;flex:1;height:30px;margin-right:0;background-image:repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px calc(100%/12));border-radius:4px;}
+  .tl-bar{position:absolute;top:4px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;}
+  .b-base{background:#1638b0;}
+  .b-hyp{background:var(--accent);}
+  .b-buffer{background:#9aa4b2;}
+  .tl-key{font-size:15px;color:var(--muted);margin-top:12px;line-height:1.5;}
+  .tl-key .sw{display:inline-block;width:13px;height:13px;border-radius:3px;vertical-align:middle;margin:0 4px 0 10px;}
+  .design-table{margin-top:6px;}
+  .design-table td{vertical-align:top;font-size:14px;line-height:1.55;padding:9px 14px;}
+  .design-table td.k{width:132px;font-weight:700;color:#fff;background:var(--accent);text-align:center;vertical-align:middle;font-size:14px;}
+  .design-table td.k.k-base{background:#1638b0;}
+  .design-table td.k.k-ref{background:#6b7688;}
+  .design-table td.ref{font-size:11.5px;color:var(--muted);line-height:1.5;}
+  .design-table td.ref b{color:var(--text);}
+  .design-table td.ref .src{color:var(--accent-dark);font-weight:700;}
+  .design-table b{color:var(--accent-dark);}
+  .design-table .arrow-step{color:var(--accent);font-weight:700;}
+  .decision{margin:3px 0 0 0;padding-left:18px;}
+  .decision li{margin-bottom:2px;font-size:13.5px;line-height:1.45;}
+  .risk-tag{display:inline-block;background:#ffe1dd;color:#c0362c;font-weight:700;font-size:12px;padding:2px 8px;border-radius:4px;}
+  .ok-tag{display:inline-block;background:#dcf1e2;color:#1f7a3d;font-weight:700;font-size:12px;padding:2px 8px;border-radius:4px;}
+  .sum-grid{display:flex;gap:16px;margin-top:6px;}
+  .sum-card{flex:1;border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:6px;padding:12px 14px;background:#f9fbff;}
+  .sum-card h3{margin:0 0 8px 0;font-size:15px;color:var(--accent-dark);}
+  .sum-card ul{font-size:13px;line-height:1.55;padding-left:16px;}
+  .sum-card li{margin-bottom:4px;}
+  .hnum{color:var(--accent);font-weight:800;}
+  .block-title{font-size:15px;font-weight:700;color:var(--accent-dark);margin:16px 0 6px 0;padding-left:10px;border-left:4px solid var(--accent);}
+  .block-title:first-of-type{margin-top:4px;}
+  .highlight-box{
+    background:#eef2ff;
+    border-left:4px solid var(--accent);
+    padding:14px 18px;
+    font-size:14.5px;
+    margin-top:auto;
+    border-radius:0 6px 6px 0;
+  }
+  .highlight-box b{color:var(--accent-dark);}
+  ul{font-size:15.5px;line-height:1.7;margin:0;padding-left:20px;}
+  .cols{display:flex;gap:24px;flex:1;}
+  .col{flex:1;}
+  .num-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;height:26px;
+    background:var(--accent);
+    color:#fff;
+    border-radius:50%;
+    font-size:13px;
+    font-weight:700;
+    margin-right:8px;
+    flex:0 0 auto;
+  }
+  .row-title{display:flex;align-items:center;margin-bottom:14px;}
+  .row-title h2{margin:0;}
+  .center-mid{
+    flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  }
+  .principle-text{font-size:16px;color:var(--muted);max-width:9in;line-height:1.7;}
+  .principle-text b{color:var(--text);}
+
+  @media print{
+    body{background:#fff;}
+    .deck{padding:0;}
+    .slide{box-shadow:none;margin:0;page-break-after:always;}
+    .slide:last-child{page-break-after:auto;}
+  }
+  @page{size:13.333in 7.5in;margin:0;}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- Slide 1: Title -->
+  <section class="slide">
+    <div class="center-mid" style="flex:1;">
+      <div class="kicker">2026 성동 워크업 일경험 프로젝트</div>
+      <h1 style="font-size:38px;">rPPG 성능 정체 원인 분석 및 개선 실험계획서</h1>
+      <div class="subtitle" style="font-size:20px;margin-top:8px;">주식회사 엑시스트 · 지원자 이예지</div>
+    </div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">1</div>
+  </section>
+
+  <!-- Slide 2: 서비스 이해 + 해결 타겟 (merged) -->
+  <section class="slide">
+    <div class="section-tag">1. 서비스 이해 및 과제 해결 타겟</div>
+    <h2>비접촉 상태 모니터링 서비스의 신뢰성을 높이기 위한 rPPG 성능 검증</h2>
+    <div class="subtitle">서비스 이해, 현재 문제, 이번 과제의 해결 타겟</div>
+    <div style="font-size:14px;line-height:1.7;margin-bottom:16px;">
+      <div style="margin-bottom:16px;"><b>1. Camera-Based Vital Sensing 및 Facial Signal Intelligence 기술</b>
+        <br> — 엑시스트는 일반 카메라와 마이크로 수집한 생체신호·표정·음성·행동 신호를 통합 분석하고, 기존 서비스에 연동할 수 있는 비접촉 상태 모니터링 솔루션을 제공한다. <br> — rPPG는 이 중 카메라로 심박을 추정하는 핵심 기술이다.</div>
+      <div><b>2. 현재 문제</b>
+         <br> — 주요 rPPG 연구 모델을 자체 학습데이터로 학습 중이나 일정 수준 이후 성능 개선 폭이 제한되고 있다. 
+         <br> — 연구 환경과 실제 웹 카메라 환경의 FPS·조명·움직임·영상 압축 조건이 다르며, 데이터 품질·기준 라벨·타임스탬프 동기화·전처리·평가 방식도 성능 저하에 영향을 줄 수 있을 것으로 예상된다.</div>
+    </div>
+    <div style="font-size:14px;line-height:1.7;margin-bottom:8px;"><b>3. 타겟별 어려움</b></div>
+    <table style="font-size:13.5px;">
+      <tr><th style="width:140px;">타겟</th><th>해결하고 싶은 문제</th></tr>
+      <tr><td><b>서비스 운영자</b></td><td>실제 웹 환경에서 비교 가능한 기준 성능과 운영 품질 판단 기준이 부족함</td></tr>
+      <tr><td><b>연구개발 조직</b></td><td>성능 정체의 원인이 모델 자체인지 데이터·수집·평가 파이프라인인지 구분하기 어려움</td></tr>
+      <tr><td><b>사용자</b></td><td>측정 실패와 오차로 인해 결과 신뢰도가 낮아질 수 있음</td></tr>
+    </table>
+    <div class="highlight-box"><b>핵심 관점</b> — 성능 저하를 모델 자체의 한계로 성급히 판단하지 않고 전 과정의 병목을 분리해 검증해야 하며, 직접적인 해결 타겟인 운영자·연구개발 조직에게 재현 가능한 기준 성능과 병목 판단 기준을 제공하는 것이 목표임.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">2</div>
+  </section>
+
+  <!-- Slide 3: rPPG란 + 파이프라인 흐름 -->
+  <section class="slide">
+    <div class="section-tag">2. rPPG 이해 및 성능 저하 원인 구조</div>
+    <h2>rPPG란? &amp; 측정 파이프라인 흐름</h2>
+    <div class="subtitle">배경 원리와 전체 파이프라인 구조</div>
+    <ul style="font-size:14px;line-height:1.6;margin-bottom:4px;">
+      <li><b>정의</b> — 카메라로 촬영한 얼굴 영상에서 심장 박동에 따라 발생하는 미세한 피부색 변화를 분석해 생체신호를 추정하는 비접촉 측정 기술</li>
+      <li><b>원리</b> — 모세혈관 혈류량 변화에 따라 피부 반사광 스펙트럼(녹색 파장 대역)이 미세하게(약 0.5% 이내) 변화한다</li>
+      <li><b>근본 난이도</b> — 신호 대 잡음비(SNR)가 극히 낮아, 이후 모든 파이프라인 단계의 오차가 이 미세 신호를 쉽게 덮어버릴 수 있다</li>
+    </ul>
+    <div class="flow" style="margin-top:16px;">
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <span>① 영상 촬영<br>/ 수집</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 0-1 1h-3"/><circle cx="12" cy="11" r="3"/></svg>
+        <span>② 얼굴·ROI<br>검출/추적</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M3 12h3l2-6 3 12 2-8 2 5h6"/></svg>
+        <span>③ 원시 신호<br>추출</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="9" cy="7" r="2.2"/><circle cx="15" cy="12" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg>
+        <span>④ 신호<br>전처리</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>
+        <span>⑤ rPPG<br>신호 추정</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M20.8 7.6a5 5 0 0 0-8.8-1.6A5 5 0 0 0 3.2 7.6c-.9 2.4.6 4.7 2.3 6.4L12 20l6.5-6c1.7-1.7 3.2-4 2.3-6.4z"/><path d="M6.5 12H9l1.5-3 2 5 1.3-2h2.7"/></svg>
+        <span>⑥ 후처리<br>(BPM 산출)</span>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="step">
+        <svg class="picon" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg>
+        <span>⑦ GT 동기화<br>/ 평가</span>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:20px;">각 단계 전환 지점(화살표)이 곧 <b>"이 지점에서 정보가 왜곡·손실될 수 있는가"</b>라는 가설의 원천이 된다.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">3</div>
+  </section>
+
+  <!-- Slide 4: 파이프라인 상세 (7단계 통합) -->
+  <section class="slide">
+    <div class="section-tag">2. rPPG 이해 및 성능 저하 원인 구조</div>
+    <h2>파이프라인 단계별 핵심 요소와 잠재 병목</h2>
+    <div class="subtitle">수집부터 평가까지 7단계 — 각 단계에서 성능이 새는 지점</div>
+    <table class="detail-table" style="font-size:15.5px;">
+      <tr><th style="width:210px;">단계</th><th style="width:410px;">핵심 요소</th><th>잠재 병목</th></tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg><b>① 영상 촬영/수집</b></div></td>
+        <td>FPS·조명·움직임·영상 압축, 자동 노출/화이트밸런스(AGC/AWB)</td>
+        <td>자동 보정·압축이 미세 색 신호를 <b>왜곡·손실</b></td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 0-1 1h-3"/><circle cx="12" cy="11" r="3"/></svg><b>② 얼굴·ROI 검출/추적</b></div></td>
+        <td>얼굴 검출기, 랜드마크 ROI(이마·볼), 프레임 추적</td>
+        <td>검출 실패·ROI 흔들림 → 노이즈 유입, ROI 정의 차로 도메인 갭</td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M3 12h3l2-6 3 12 2-8 2 5h6"/></svg><b>③ 원시 신호 추출</b></div></td>
+        <td>ROI 픽셀 채널별 공간 평균, RGB 시계열 생성</td>
+        <td>ROI 위치·크기 변동이 평균값에 <b>구조적 잡음</b> 유발</td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="9" cy="7" r="2.2"/><circle cx="15" cy="12" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg><b>④ 신호 전처리</b></div></td>
+        <td>디트렌딩·정규화, 신호 결합(CHROM/POS 등), 대역통과 필터</td>
+        <td>필터 대역 이탈로 신호 손실, 모션 아티팩트 제거 한계</td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg><b>⑤ rPPG 신호 추정</b></div></td>
+        <td>신호처리(CHROM/POS) 또는 딥러닝(DeepPhys·PhysNet 등) 모델</td>
+        <td>학습·실환경 분포 차 도메인 갭 → <b>"모델 한계"로 오인되기 쉬움</b></td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M20.8 7.6a5 5 0 0 0-8.8-1.6A5 5 0 0 0 3.2 7.6c-.9 2.4.6 4.7 2.3 6.4L12 20l6.5-6c1.7-1.7 3.2-4 2.3-6.4z"/><path d="M6.5 12H9l1.5-3 2 5 1.3-2h2.7"/></svg><b>⑥ 후처리(BPM/HRV)</b></div></td>
+        <td>피크/FFT BPM 산출, SQI 기반 저품질 구간 제외·재측정</td>
+        <td>저품질 구간 미제거 시 실패가 <b>평균 오차에 반영</b></td>
+      </tr>
+      <tr>
+        <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg><b>⑦ GT 동기화/평가</b></div></td>
+        <td>참조 장비(ECG/PPG), 타임스탬프 동기화, 지표(MAE·RMSE·bias 등)</td>
+        <td>수백 ms 동기 오차·GT 라벨 오차가 <b>성능 저하로 오인</b></td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">4</div>
+  </section>
+
+  <!-- Slide 5: 후보 가설 10선 -->
+  <section class="slide">
+    <div class="section-tag">3. 성능 저하 후보 가설</div>
+    <h2>rPPG 파이프라인 성능 저하 가설</h2>
+    <div class="subtitle">10개의 가설에 대한 영향도·불확실성·실행비용 평가</div>
+    <table class="hyp-table">
+      <tr>
+        <th style="width:26px;">#</th>
+        <th style="text-align:left;width:292px;">가설</th>
+        <th style="text-align:left;">설명</th>
+        <th style="width:60px;">단계</th>
+        <th style="width:75px;">영향도</th>
+        <th style="width:75px;">불확실성</th>
+        <th style="width:75px;">실행비용</th>
+      </tr>
+      <tr class="pick-row">
+        <td class="c">1</td>
+        <td><b>자동 노출/화이트밸런스(AGC/AWB)</b><span class="pick-tag">우선</span></td>
+        <td>프레임별 밝기·색 재보정이 미세 맥파 신호를 덮음(도메인 갭 핵심)</td>
+        <td class="c">1</td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+      <tr>
+        <td class="c">2</td>
+        <td><b>학습–실환경 도메인 갭(재학습 필요)</b></td>
+        <td>통제 데이터에만 적합돼 웹 입력 일반화 실패 → 도메인 적응 필요</td>
+        <td class="c">5</td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+      </tr>
+      <tr class="pick-row">
+        <td class="c">3</td>
+        <td><b>데이터 분할 누수·편향</b><span class="pick-tag">우선</span></td>
+        <td>피험자 누수·조명/기기 편향으로 일반화 성능이 과대·과소 평가</td>
+        <td class="c">7</td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+      <tr class="pick-row">
+        <td class="c">4</td>
+        <td><b>train↔inference 전처리 불일치</b><span class="pick-tag">우선</span></td>
+        <td>정규화·샘플링·색공간이 학습/추론 간 달라 성능이 깎임</td>
+        <td class="c">5</td>
+        <td class="c"><span class="pill lv-high">높음</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-low">낮음</span></td>
+      </tr>
+      <tr class="pick-row">
+        <td class="c">5</td>
+        <td><b>타임스탬프 동기화 오차</b><span class="pick-tag">우선</span></td>
+        <td>offset·클럭 드리프트로 beat-level 지표·Bland-Altman 신뢰성 저하</td>
+        <td class="c">7</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-low">낮음</span></td>
+      </tr>
+      <tr class="pick-row">
+        <td class="c">6</td>
+        <td><b>실패 샘플 처리·SQI 부재</b><span class="pick-tag">우선</span></td>
+        <td>저품질 구간을 제외/게이팅하지 않아 실패가 평균 오차에 반영</td>
+        <td class="c">6~7</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-low">낮음</span></td>
+      </tr>
+      <tr>
+        <td class="c">7</td>
+        <td><b>GT 라벨 부정확성</b></td>
+        <td>참조 장비 접촉 불량·모션으로 라벨이 흔들려 상한 성능을 억제</td>
+        <td class="c">7</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+      <tr>
+        <td class="c">8</td>
+        <td><b>영상 압축(코덱·크로마 서브샘플링)</b></td>
+        <td>색차 정보 손실로 녹색 채널 신호가 훼손</td>
+        <td class="c">1</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+      <tr>
+        <td class="c">9</td>
+        <td><b>가변·저 FPS / 프레임 드롭</b></td>
+        <td>불안정한 프레임 간격이 주파수 추정을 왜곡</td>
+        <td class="c">1</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+      <tr>
+        <td class="c">10</td>
+        <td><b>얼굴 검출·ROI 지터</b></td>
+        <td>프레임 간 ROI 흔들림이 구조적 잡음을 주입(저조도에서 심화)</td>
+        <td class="c">2~3</td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+        <td class="c"><span class="pill lv-mid">보통</span></td>
+      </tr>
+    </table>
+    <div class="legend"> · <span style="color:var(--accent-dark);font-weight:700;">영향도</span> = 원인일 경우 성능에 미치는 크기&nbsp;|&nbsp;<span style="color:var(--accent-dark);font-weight:700;">불확실성</span> = 원인 여부의 사전 불확실성&nbsp;|&nbsp;<span style="color:var(--accent-dark);font-weight:700;">실행비용</span> = 검증에 드는 시간 및 비용 &nbsp;|&nbsp; <span style="display:inline-block;width:11px;height:11px;background:#eaf1ff;border-left:3px solid var(--accent);vertical-align:middle;"></span> 우선 검증 가설</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">5</div>
+  </section>
+
+  <!-- Slide 6: 3개월 실행 타임라인 -->
+  <section class="slide">
+    <div class="section-tag">3. 성능 저하 후보 가설</div>
+    <h2>3개월 실행 타임라인</h2>
+    <div class="subtitle">baseline 확립부터 우선 5개 가설 검증까지 — 12주 로드맵</div>
+
+    <div class="g-monthband">
+      <div class="g-month">1개월차</div>
+      <div class="g-month">2개월차</div>
+      <div class="g-month">3개월차</div>
+    </div>
+    <div class="g-weekrow">
+      <div class="g-wklabel"><span>단계</span><span>주차 ▸</span></div>
+      <div class="g-wktrack">
+        <div class="g-wk">1</div><div class="g-wk">2</div><div class="g-wk">3</div><div class="g-wk">4</div>
+        <div class="g-wk">5</div><div class="g-wk">6</div><div class="g-wk">7</div><div class="g-wk">8</div>
+        <div class="g-wk">9</div><div class="g-wk">10</div><div class="g-wk">11</div><div class="g-wk">12</div>
+      </div>
+    </div>
+
+    <div class="tl-row r-base">
+      <div class="tl-label"><b>Baseline 설정</b><br><span class="m">평가 파이프라인·비교조건 고정</span></div>
+      <div class="tl-track"><div class="tl-bar b-base" style="left:0%;width:16.667%;">1–2주</div></div>
+    </div>
+    <div class="tl-row r-hyp">
+      <div class="tl-label"><b><span class="hnum">#3</span> 데이터 분할 누수·편향</b><br><span class="m">subject-independent 재분할·층화</span></div>
+      <div class="tl-track"><div class="tl-bar b-hyp" style="left:8.333%;width:16.667%;">2–3주</div></div>
+    </div>
+    <div class="tl-row r-hyp">
+      <div class="tl-label"><b><span class="hnum">#5</span> 타임스탬프 동기화 오차</b><br><span class="m">offset·drift 추정·보정 후 재평가</span></div>
+      <div class="tl-track"><div class="tl-bar b-hyp" style="left:8.333%;width:16.667%;">2–3주</div></div>
+    </div>
+    <div class="tl-row r-hyp">
+      <div class="tl-label"><b><span class="hnum">#4</span> train↔inference 전처리 불일치</b><br><span class="m">전처리 코드 diff·중간값 일치 검사</span></div>
+      <div class="tl-track"><div class="tl-bar b-hyp" style="left:16.667%;width:16.667%;">3–4주</div></div>
+    </div>
+    <div class="tl-row r-hyp">
+      <div class="tl-label"><b><span class="hnum">#6</span> 실패 샘플 처리·SQI 부재</b><br><span class="m">SQI 정의·임계값 스윕·성공률 분리</span></div>
+      <div class="tl-track"><div class="tl-bar b-hyp" style="left:25%;width:25%;">4–6주</div></div>
+    </div>
+    <div class="tl-row r-hyp">
+      <div class="tl-label"><b><span class="hnum">#1</span> 자동 노출/화이트밸런스(AWB)</b><br><span class="m">고정 vs 자동 대조 수집·SNR ablation</span></div>
+      <div class="tl-track"><div class="tl-bar b-hyp" style="left:41.667%;width:33.333%;">6–9주</div></div>
+    </div>
+    <div class="tl-row r-buffer">
+      <div class="tl-label"><b>후속 실험 · 예비</b><br><span class="m">결과 기반 재우선순위·추가 검증</span></div>
+      <div class="tl-track"><div class="tl-bar b-buffer" style="left:75%;width:25%;">10–12주</div></div>
+    </div>
+
+    <div class="tl-key"><span class="sw" style="background:#1638b0;"></span>Baseline(전제 조건) <span class="sw b-hyp"></span>우선 검증 가설 5선 <span class="sw" style="background:#9aa4b2;"></span>예비·후속 &nbsp;|&nbsp; 저비용·의존성 우선 배치, 재수집이 필요한 AWB는 파이프라인·평가 오류 배제 후 진행. 9주 이후는 결과에 따라 재우선순위.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">6</div>
+  </section>
+
+  <!-- Slide 7: 단계별 세부 태스크 -->
+  <section class="slide">
+    <div class="section-tag">3. 성능 저하 후보 가설</div>
+    <h2>단계별 세부 태스크</h2>
+    <div class="subtitle">Baseline 설정부터 우선 5개 가설 검증까지의 실행 항목</div>
+    <table class="hyp-table" style="font-size:12px;">
+      <tr>
+        <th style="text-align:left;width:170px;">단계</th>
+        <th style="text-align:left;">세부 태스크</th>
+        <th style="text-align:left;width:250px;">기대 산출물</th>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid #1638b0;"><b>Baseline 설정</b></td>
+        <td>데이터 범위·train/val/test 분할 규칙 확정 → 웹앱 조건(FPS·해상도·압축) 정의 → 비교 모델(CHROM/POS·딥러닝) 고정 → 평가 스크립트(MAE·RMSE·bias·Bland-Altman·성공률) 구현</td>
+        <td>재현 가능한 평가 파이프라인, baseline 성능표·비교 조건 문서</td>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid var(--accent);"><b><span class="hnum">#3</span> 데이터 분할<br>누수·편향</b></td>
+        <td>피험자·조명·기기·피부톤 메타데이터 정리 → subject-independent 재분할 → 조건 층화(stratify) → 기존 분할 대비 성능차 측정</td>
+        <td>누수 없는 분할셋, 기존 성능의 과대평가 여부 판정</td>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid var(--accent);"><b><span class="hnum">#5</span> 타임스탬프<br>동기화 오차</b></td>
+        <td>영상–GT 교차상관으로 offset 추정 → 실측 fps로 클럭 드리프트 점검 → 보정 적용 → MAE·RMSE·Bland-Altman 재계산</td>
+        <td>보정 전/후 지표 비교, 동기화의 성능 기여도 정량화</td>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid var(--accent);"><b><span class="hnum">#4</span> train↔inference<br>전처리 불일치</b></td>
+        <td>학습·추론 전처리 코드 diff(정규화·샘플링·색공간·해상도) → 동일 입력의 중간 텐서 일치 검사 → 불일치 수정 → 재평가</td>
+        <td>전처리 일치성 리포트, 수정 전/후 성능차</td>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid var(--accent);"><b><span class="hnum">#6</span> 실패 샘플<br>처리·SQI 부재</b></td>
+        <td>SNR 기반 신호품질지표(SQI) 정의 → 임계값 스윕(coverage-error tradeoff) → 실패/재측정 규칙 수립 → 성공률·오차 분리 리포트</td>
+        <td>SQI 게이팅 기준, 성공률–MAE 곡선·운영 품질 기준</td>
+      </tr>
+      <tr>
+        <td style="border-left:5px solid var(--accent);"><b><span class="hnum">#1</span> 자동 노출/<br>화이트밸런스(AWB)</b></td>
+        <td>고정 API 가능 여부 확인 → 수집 프로토콜 설계 → AE/AWB 고정 vs 자동 대조 수집(동일 피험자 반복) → SNR·MAE 비교·ablation</td>
+        <td>AWB의 영향도 정량화, 웹앱 수집 가이드라인</td>
+      </tr>
+    </table>
+    <div class="legend">※ 각 단계는 <b>수용 기준 미달·가설 기각 시</b> 다음 후보로 전환하며, 10~12주차 예비 기간에 결과를 반영해 재우선순위를 결정한다.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">7</div>
+  </section>
+
+  <!-- Slide 8: Baseline 설정 설계 -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2>Baseline 설정 설계</h2>
+    <div class="subtitle">모든 개선 실험의 기준선이 되는 재현 가능한 평가 체계 확립</div>
+    <table class="design-table">
+      <tr>
+        <td class="k k-base">실험 설계</td>
+        <td><b>데이터 범위</b> 자체 수집 데이터셋 전체(피험자 수·환경 조건 명시) &nbsp;<span class="arrow-step">→</span>&nbsp; <b>분할</b> subject-independent train/val/test(예 60/20/20), 조명·기기·피부톤 층화 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>웹앱 조건</b> FPS·해상도·압축 코덱을 실서비스와 동일하게 고정 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>비교 모델</b> 전통기법(CHROM/POS)+현재 딥러닝 모델을 동일 조건에서 평가 &nbsp;<span class="arrow-step">→</span>&nbsp; <b>절차 고정</b> 전처리·평가 스크립트화(고정 시드·버전관리)</td>
+      </tr>
+      <tr>
+        <td class="k k-base">평가 지표</td>
+        <td>HR 정확도: <b>MAE · RMSE · bias</b>, <b>Bland-Altman</b>(LoA), 측정 <b>성공률 · 실패율 · 재측정률</b> &nbsp;|&nbsp; (가능 시) 파형 상관·HRV</td>
+      </tr>
+      <tr>
+        <td class="k k-base">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>재현성 확보</b> — 동일 입력 재실행 시 지표 편차 &lt; 1%(결정론적) → baseline으로 확정하고 이후 실험의 기준선으로 사용</li>
+            <li><b>재현 불가·분산 큼</b> — 파이프라인 결함(시드·데이터 로딩·평가 코드)을 우선 수정 후 재확립</li>
+            <li>확정된 baseline 성능을 문헌·내부 목표와 비교해 개선 여지의 위치를 명시</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 입력 정규화 3종·Butterworth 0.75–2.5Hz 필터·FFT/피크 BPM 산출·cross-dataset 평가를 <b>재현 가능 baseline의 표준 프로토콜(reference implementation)</b>로 제시. &nbsp;|&nbsp; <span class="src">Elgendi et al. (2026), npj Digital Medicine</span> — HR 지표(MAE·RMSE·Bland-Altman) + 신호수준 지표(PCC·SNR)를 함께 보는 <b>다중 지표 평가</b> 권고.</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">8</div>
+  </section>
+
+  <!-- Slide 9: 데이터 분할 누수·편향 -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2><span class="hnum">#3</span> 데이터 분할 누수·편향 — 실험 설계</h2>
+    <div class="subtitle">기존 성능이 착시(과대평가)인지 먼저 판별</div>
+    <table class="design-table">
+      <tr>
+        <td class="k">실험 설계</td>
+        <td>피험자·조명·기기·피부톤 메타데이터 정리 &nbsp;<span class="arrow-step">→</span>&nbsp; 기존 분할 vs <b>subject-independent 재분할</b> A/B 비교 &nbsp;<span class="arrow-step">→</span>&nbsp; 조건 <b>층화(stratify)</b> 후 그룹별 성능 측정 &nbsp;<span class="arrow-step">→</span>&nbsp; 동일 피험자 train/test 혼입(누수) 감사</td>
+      </tr>
+      <tr>
+        <td class="k">평가 지표</td>
+        <td><b>MAE · RMSE</b>(전체 및 조건 그룹별), <b>그룹 간 성능 격차</b>, 기존 분할 대비 <b>성능 변화폭</b></td>
+      </tr>
+      <tr>
+        <td class="k">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>채택</b> — subject-independent 전환 시 성능이 크게 하락(예 MAE +2bpm↑) → 누수 확정, <b>재분할셋을 새 baseline</b>으로 교체</li>
+            <li><b>수집 보강</b> — 그룹 간 격차가 큼 → 데이터 대표성 문제로 수집 보강 우선순위 상향</li>
+            <li><b>기각</b> — 변화 미미 → 분할은 원인 아님, 다음 가설로 이동</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 기존 관행(학습·테스트 세트 불일치, 신뢰 불가 라벨의 임의 필터링)이 보고 성능을 실제 일반화와 괴리시킨다고 지적하고, <b>cross-dataset 평가(한 데이터셋 학습 → 다른 데이터셋 평가)</b>를 표준 프로토콜로 제시. &nbsp;|&nbsp; <span class="src">remotebiosensing/rppg</span> — 공정 평가용 국내 벤치마크 프레임워크.</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">9</div>
+  </section>
+
+  <!-- Slide 10: 타임스탬프 동기화 오차 -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2><span class="hnum">#5</span> 타임스탬프 동기화 오차 — 실험 설계</h2>
+    <div class="subtitle">"모델이 아닌 채점의 오류" 배제</div>
+    <table class="design-table">
+      <tr>
+        <td class="k">실험 설계</td>
+        <td>영상–GT <b>교차상관</b>으로 최적 offset 탐색 &nbsp;<span class="arrow-step">→</span>&nbsp; 실측 fps로 <b>클럭 드리프트</b> 추정 &nbsp;<span class="arrow-step">→</span>&nbsp; 상수 offset vs 드리프트 분리 &nbsp;<span class="arrow-step">→</span>&nbsp; 보정 전/후 동일 데이터 재평가</td>
+      </tr>
+      <tr>
+        <td class="k">평가 지표</td>
+        <td><b>MAE · RMSE · bias</b>, <b>Bland-Altman</b> LoA, (가능 시) <b>파형 상관 · IBI 오차</b>(beat-level에서 민감)</td>
+      </tr>
+      <tr>
+        <td class="k">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>채택</b> — 보정 후 RMSE·LoA가 유의 개선(예 RMSE −20%↑) → 동기화가 주요 병목, 파이프라인에 보정 상시 적용</li>
+            <li><b>수집 개선</b> — 드리프트 확인 시 → 수집 단계 클럭 동기화(하드웨어 트리거 등) 개선 요구</li>
+            <li><b>기각</b> — 보정해도 변화 없음 → 동기화는 원인 아님, 다음 가설로</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">Mironenko et al. (2020), "Rarely Considered Factors", CVPRW</span> — <b>롤링 셔터</b>로 최대 0.02초 위상 편이 발생(심박 위상 이동과 동급 크기), <b>시간 윈도우 크기</b>에 따라 산출 HR이 최대 4–10 bpm 차이 → 비교 실험 시 윈도우·동기화 조건 명시 필요. (동일 연구는 불규칙 프레임레이트의 영향은 미미하다고도 보고)</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">10</div>
+  </section>
+
+  <!-- Slide 11: train↔inference 전처리 불일치 -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2><span class="hnum">#4</span> train↔inference 전처리 불일치 — 실험 설계</h2>
+    <div class="subtitle">모델을 손대기 전, 저비용·고효과 항목 배제</div>
+    <table class="design-table">
+      <tr>
+        <td class="k">실험 설계</td>
+        <td>학습·추론 전처리 <b>코드 diff</b>(정규화·프레임 샘플링·색공간·리사이즈) &nbsp;<span class="arrow-step">→</span>&nbsp; 동일 입력의 <b>중간 텐서 수치 비교</b> &nbsp;<span class="arrow-step">→</span>&nbsp; 불일치 항목을 하나씩 정렬하는 <b>ablation</b> &nbsp;<span class="arrow-step">→</span>&nbsp; 수정 후 재평가</td>
+      </tr>
+      <tr>
+        <td class="k">평가 지표</td>
+        <td>중간 텐서 <b>max/mean 절대오차</b>(일치성), 항목 정렬 후 <b>MAE · RMSE 변화</b></td>
+      </tr>
+      <tr>
+        <td class="k">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>채택</b> — 정렬 후 성능 개선 → 불일치가 원인, 즉시 수정(저비용 고효과)</li>
+            <li><b>부분 수정</b> — 일부만 개선 → 기여 항목을 식별해 우선 수정</li>
+            <li><b>기각</b> — 중간값 완전 일치인데 성능 그대로 → 원인 아님, 모델·데이터 쪽으로 이동</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">Liu et al. (2023), "rPPG-Toolbox", NeurIPS D&amp;B</span> — 모델·전처리·후처리·하드웨어가 섞여 성능차 원인을 특정할 수 없는 <b>"apples vs oranges" 비교 문제</b>를 명시하고, 입력 정규화 3종(Raw/Standardized/DiffNormalized)·얼굴 크롭 방식·후처리(Butterworth 0.75–2.5Hz→FFT/피크)를 표준화 → 전처리 일치성 검증의 <b>참조 구현</b>으로 활용 가능.</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">11</div>
+  </section>
+
+  <!-- Slide 12: 실패 샘플 처리·SQI -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2><span class="hnum">#6</span> 실패 샘플 처리·SQI 부재 — 실험 설계</h2>
+    <div class="subtitle">실패가 평균 오차를 부풀리는지 분리해 확인</div>
+    <table class="design-table">
+      <tr>
+        <td class="k">실험 설계</td>
+        <td>SNR 기반 <b>신호품질지표(SQI)</b> 정의 &nbsp;<span class="arrow-step">→</span>&nbsp; 임계값 스윕으로 <b>coverage-error tradeoff</b> 곡선 작성 &nbsp;<span class="arrow-step">→</span>&nbsp; SQI 게이팅 전/후 성능·성공률 비교 &nbsp;<span class="arrow-step">→</span>&nbsp; 실패/재측정 규칙 시뮬레이션</td>
+      </tr>
+      <tr>
+        <td class="k">평가 지표</td>
+        <td><b>성공률 · 실패율 · 재측정률</b>, coverage별 <b>MAE</b>, 게이팅 후 <b>MAE 개선폭</b></td>
+      </tr>
+      <tr>
+        <td class="k">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>채택</b> — 저품질 구간 제외 시 MAE 크게 개선 &amp; 성공률 허용 범위 유지(예 성공률 ≥ 85%) → 게이팅 기준을 <b>운영 품질 기준</b>으로 반영</li>
+            <li><b>임계값 재조정</b> — 성공률 과도 하락 → coverage-error 균형점으로 임계값 조정</li>
+            <li><b>기각</b> — 게이팅해도 개선 미미 → 실패 처리 아닌 다른 원인</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">"Optimal signal quality index for rPPG" (2024), npj Biosensing</span> — 8종 SQI 비교 검증에서 <b>SNR 기반 NSQI</b>가 품질 구간 판별에 최우수, <b>임계값 NSQI &lt; 0.293</b>에서 고품질 구간을 효과적으로 선별(Leave-one-out 교차검증) → 임계값 스윕 실험의 구체 출발점. &nbsp;|&nbsp; <span class="src">Reliability factor for rPPG (ACM, 2023)</span> — 신뢰도 지표 기반 결과 게이팅.</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">12</div>
+  </section>
+
+  <!-- Slide 13: 자동 노출/화이트밸런스 -->
+  <section class="slide">
+    <div class="section-tag">4. Baseline 및 가설별 실험 설계</div>
+    <h2><span class="hnum">#1</span> 자동 노출/화이트밸런스(AWB) — 실험 설계</h2>
+    <div class="subtitle">파이프라인·평가 오류 배제 후 남는 실제 환경 원인 규명</div>
+    <table class="design-table">
+      <tr>
+        <td class="k">실험 설계</td>
+        <td><b>고정 API</b> 가능 여부 확인 &nbsp;<span class="arrow-step">→</span>&nbsp; 수집 프로토콜 설계 &nbsp;<span class="arrow-step">→</span>&nbsp; AE/AWB <b>고정 vs 자동</b> 대조 수집(동일 피험자·자세 반복) &nbsp;<span class="arrow-step">→</span>&nbsp; SNR·성능 비교, 압축·조명과 교차 <b>ablation</b></td>
+      </tr>
+      <tr>
+        <td class="k">평가 지표</td>
+        <td>신호 <b>SNR</b>, <b>MAE · RMSE · bias</b>, 조건별(고정/자동) <b>성능 격차</b></td>
+      </tr>
+      <tr>
+        <td class="k">판단 기준</td>
+        <td>
+          <ul class="decision">
+            <li><b>채택</b> — 고정 조건에서 SNR·MAE 유의 개선 → AWB가 도메인 갭 주원인, 수집 가이드에 고정(또는 색 안정화 보정) 반영</li>
+            <li><b>대안 실험</b> — 고정 불가(API 제약) → 후처리 색 안정화 보정으로 대체 검증</li>
+            <li><b>기각</b> — 차이 없음 → AWB 아님, 압축·FPS 등 다른 수집 요인으로 이동</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k k-ref">근거자료</td>
+        <td class="ref"><span class="src">Odinaev et al. (2023), "Optimizing Camera Exposure Control", CVPRW</span> — <b>고정 노출이 자동 노출보다 항상 같거나 우수</b>(자동 노출은 생체신호가 아닌 화면 밝기 기준으로 조정). 밝기 [50,200]서 MAE &lt; 5 bpm(25 lux 저조도 포함), 노출시간 1/16초에서 최적(상관 ~20%↑) → 고정 vs 자동 대조 수집 설계와 방법론 일치. &nbsp;|&nbsp; <span class="src">Dedicated Exposure Control (IEEE, 2020)</span> — rPPG 전용 노출 제어기.</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">13</div>
+  </section>
+
+  <!-- Slide 14: 협업 및 위험 대응 계획 -->
+  <section class="slide">
+    <div class="section-tag">5. 협업 및 위험 대응 계획</div>
+    <h2>협업 및 위험 대응 계획</h2>
+    <div class="subtitle">실험 실행에 필요한 협업 구조와 주요 리스크의 사전 대응안</div>
+
+    <div class="block-title">협업 구조</div>
+    <table style="font-size:12.5px;">
+      <tr><th style="width:100px;">협업 파트너</th><th style="width:550px;">함께 진행하는 일</th><th>공동 산출물</th></tr>
+      <tr>
+        <td><b>연구(모델)</b></td>
+        <td>비교 모델·학습 코드 공유, 전처리·후처리 사양 공동 확인, 도메인 적응 여부 함께 판단</td>
+        <td>baseline 성능표, 전처리 일치성 리포트</td>
+      </tr>
+      <tr>
+        <td><b>데이터</b></td>
+        <td>수집·라벨 메타데이터 공유, GT 장비 동기화 공동 점검, AWB 대조 수집 협업</td>
+        <td>subject-independent 분할셋, 대조 수집 데이터</td>
+      </tr>
+      <tr>
+        <td><b>웹 개발</b></td>
+        <td>웹앱 수집 조건(FPS·해상도·압축) 함께 확인, 카메라 AE/AWB 고정 API 가능 여부 공동 검토</td>
+        <td>웹앱 재현 조건 정의서, 수집 가이드</td>
+      </tr>
+    </table>
+
+    <div class="block-title">위험 대응</div>
+    <table style="font-size:12.5px;">
+      <tr><th style="width:100px;">실험 번호</th><th style="width:500px;">위험 요소</th><th>대응 방안</th></tr>
+      <tr>
+        <td class="hnum" style="text-align:center;font-weight:800;">#1</td>
+        <td>AWB/노출 고정 API 미지원</td>
+        <td>후처리 색 안정화 보정으로 대체 검증, 수집 가이드로 조건 통제</td>
+      </tr>
+      <tr>
+        <td class="hnum" style="text-align:center;font-weight:800;">#1</td>
+        <td>GT·대조 수집 지연·자원 제약</td>
+        <td>재수집이 필요 없는 저비용 가설(#3·#5·#4·#6)을 우선 배치해 일정 방어</td>
+      </tr>
+      <tr>
+        <td class="hnum" style="text-align:center;font-weight:800;">#3~#6</td>
+        <td>저비용 가설이 모두 기각(파이프라인 이상 없음)</td>
+        <td>도메인 갭(재학습, #2)으로 조기 전환, 예비 기간(10~12주) 활용</td>
+      </tr>
+      <tr>
+        <td class="hnum" style="text-align:center;font-weight:800;">#1·#6</td>
+        <td>근거자료 수치의 자체 환경 불일치</td>
+        <td>문헌 임계값(NSQI·노출 등)은 초기값으로만 쓰고 자체 데이터로 재튜닝</td>
+      </tr>
+    </table>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">14</div>
+  </section>
+
+  <!-- Slide 15: AI와 휴먼의 판단 과정 -->
+  <section class="slide">
+    <div class="section-tag">6. AI와 휴먼의 판단 과정</div>
+    <h2>AI와 휴먼의 판단 과정</h2>
+    <div class="subtitle">AI가 도운 부분과 지원자가 직접 판단·검증한 부분을 구분</div>
+    <table style="font-size:13px;">
+      <tr><th style="width:150px;">단계</th><th>AI가 도운 일</th><th>지원자가 직접 판단·검증한 일</th></tr>
+      <tr>
+        <td><b>파이프라인 정리</b></td>
+        <td>rPPG 7단계 구조와 단계별 병목 초안을 작성했다</td>
+        <td>웹캠 서비스 맥락에 맞게 단계와 병목을 추리고 다듬었다</td>
+      </tr>
+      <tr>
+        <td><b>가설 도출</b></td>
+        <td>후보 가설 20개를 발굴하고 파이프라인 단계에 연결했다</td>
+        <td>단순 설정 변경류는 빼고 10개로 압축했다</td>
+      </tr>
+      <tr>
+        <td><b>우선순위·지표</b></td>
+        <td>영향도·불확실성·비용 평가 초안을 제시했다</td>
+        <td>동기화 영향도를 '높음'에서 '보통'으로 바로잡고, 우선 5선과 정렬 기준을 확정했다</td>
+      </tr>
+      <tr>
+        <td><b>근거자료</b></td>
+        <td>논문·툴박스를 검색해 요약했다</td>
+        <td>각 설계와 어떻게 연결되는지 판단하고, 2차 요약 수치는 원문 대조를 전제로 표기했다</td>
+      </tr>
+    </table>
+    <div class="highlight-box"><b>사람이 검토하는 방법</b> — AI가 준 결과는 세 가지 기준으로 사람이 다시 확인한다. <b>재현성</b>은 같은 입력을 다시 돌려도 값이 같은지, <b>통계적 타당성</b>은 MAE 하나만 보지 않고 bias·Bland-Altman·성공률을 함께 보는지, <b>제품 환경 적합성</b>은 문헌 수치를 초기값으로만 쓰고 자체 웹앱 데이터로 다시 검증하는지를 본다. 채택할지 고칠지 뺄지는 결국 사람이 정한다.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">15</div>
+  </section>
+
+  <!-- Slide 16: 종합 요약 -->
+  <section class="slide">
+    <div class="section-tag">7. 종합 요약</div>
+    <h2>종합 요약 — 무엇을, 왜, 어떤 순서로</h2>
+    <div class="subtitle">"성능 저하 = 모델 한계"로 성급히 단정하지 않고, 병목을 순서대로 배제한다</div>
+    <div class="sum-grid">
+      <div class="sum-card">
+        <h3>핵심 접근</h3>
+        <ul>
+          <li>재현 가능한 <b>baseline</b>을 먼저 확립해 "채점"을 신뢰 가능하게</li>
+          <li>저비용·고ROI <b>평가·파이프라인 오류</b>부터 배제</li>
+          <li>남는 <b>실제 환경 원인</b>(AWB 등)을 겨냥</li>
+          <li><b>모델 재학습은 마지막</b> — 예비 기간에 결과 보고 판단</li>
+        </ul>
+      </div>
+      <div class="sum-card">
+        <h3>3개월 산출물</h3>
+        <ul>
+          <li>웹앱 조건에서 <b>재현 가능한 baseline 성능·비교 조건</b></li>
+          <li>우선 5개 가설의 <b>검증 결과와 병목 규명</b></li>
+          <li>지표별 <b>수용 기준과 결과별 의사결정 기준</b></li>
+          <li>협업·위험 대응을 포함한 <b>실행 계획서</b></li>
+        </ul>
+      </div>
+      <div class="sum-card">
+        <h3>의사결정 원칙</h3>
+        <ul>
+          <li>각 실험은 <b>수용 기준</b>으로 채택·기각 판정</li>
+          <li>가설 기각 시 <b>다음 후보</b>로 전환</li>
+          <li>지표는 <b>MAE+bias+Bland-Altman+성공률</b> 병행</li>
+          <li>문헌 수치는 초기값, <b>자체 데이터로 재튜닝</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight-box"><b>한 줄 결론</b> — 신뢰할 수 있는 채점 → 싼 검증 → 비싼 검증 → (필요 시) 모델. 이 순서가 곧 영향도·불확실성·실행비용을 반영한 우선순위다.</div>
+    <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
+    <div class="pagenum">16</div>
+  </section>
+
+</div>
+</body>
+</html>

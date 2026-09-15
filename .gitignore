@@ -1,0 +1,4 @@
+# 전부 무시하고 슬라이드 HTML만 추적
+*
+!.gitignore
+!rPPG_파이프라인_슬라이드.html
