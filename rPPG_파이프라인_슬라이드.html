@@ -269,7 +269,7 @@
         <span><b>⑦ GT 동기화<br>/ 평가</b></span>
       </div>
     </div>
-    <div class="highlight-box" style="margin-top:20px;">파이프라인의 단계마다 정보가 왜곡되거나 손실될 수 있다. 따라서 <b>"성능 저하가 어느 단계에서 생기는가"</b>를 묻는 가설은 바로 이 단계들에서 나온다.</div>
+    <div class="highlight-box" style="margin-top:20px;">파이프라인의 단계마다 정보가 왜곡되거나 손실될 수 있다. 따라서 성능 저하를 모델 탓으로 단정하기보다, <b>각 단계를 하나씩 가설로 세워 검증하는 접근이 합리적이다.</b></div>
     <div class="footer-brand">AI 모델 연구 개발자 직무과제</div>
     <div class="pagenum">3</div>
   </section>
@@ -278,9 +278,9 @@
   <section class="slide">
     <div class="section-tag">2. rPPG 이해 및 성능 저하 원인 구조</div>
     <h2>파이프라인 단계별 핵심 요소와 잠재 병목</h2>
-    <div class="subtitle">수집부터 평가까지 7단계 — 각 단계에서 성능이 새는 지점</div>
-    <table class="detail-table" style="font-size:15.5px;">
-      <tr><th style="width:220px;">단계</th><th style="width:440px;">핵심 요소</th><th>잠재 병목</th></tr>
+    <div class="subtitle">각 단계별 성능 저하 가능성이 있는 핵심 요소</div>
+    <table class="detail-table" style="font-size:14.5px;">
+      <tr><th style="width:220px;">단계</th><th style="width:450px;">핵심 요소</th><th>잠재 병목</th></tr>
       <tr>
         <td><div class="stage-cell"><svg class="picon" viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg><b>① 영상 촬영/수집</b></div></td>
         <td>FPS·조명·움직임·영상 압축, 자동 노출/화이트밸런스(AGC/AWB)</td>
