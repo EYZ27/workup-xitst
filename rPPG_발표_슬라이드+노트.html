@@ -208,13 +208,12 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
 .annots{flex:1;min-width:300px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:9px;}
 @media (max-width:1120px){ .row{flex-direction:column;} .slide-frame{position:static;} }
 .annots-title{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.03em;margin-bottom:2px;}
-.annot{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:#f7f9fc;border-radius:0 8px 8px 0;padding:9px 14px;}
-.annot .rlabel{flex:0 0 132px;font-weight:700;color:var(--accent-dark);font-size:13px;line-height:1.5;}
-.annot .rbody{flex:1;font-size:14px;line-height:1.62;}
+.annot{border-left:3px solid var(--accent);background:#f7f9fc;border-radius:0 8px 8px 0;padding:9px 14px;}
+.annot .rbody{font-size:14px;line-height:1.66;}
+.rtag{display:inline-block;font-size:11.5px;font-weight:700;color:var(--accent-dark);background:#e5edff;border-radius:5px;padding:1px 8px;margin-right:5px;white-space:nowrap;}
 .annot.q{border-left-color:var(--warn,#c0362c);background:#ffe1dd;}
-.annot.q .rlabel{color:#c0362c;}
+.rtag.q{color:#fff;background:#c0362c;}
 .annot.q .rbody b{color:#c0362c;}
-.annot .rl2{display:inline-block;font-size:11.5px;font-weight:700;color:var(--muted);background:#fff;border:1px solid #e3b7b0;border-radius:4px;padding:0 6px;margin-right:3px;}
 :root{--warn:#c0362c;}
 @page{size:A4 landscape;margin:9mm;}
 @media print{ .sheet{page-break-inside:avoid;} .slide{page-break-after:auto !important;} body{background:#fff;} }
@@ -246,8 +245,8 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">1</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">오프닝</div><div class="rbody">안녕하세요, 지원자 이예지입니다. 오늘은 <b>카메라만으로 심박을 재는 rPPG 기술</b>의 성능이 왜 정체됐는지 원인을 찾고, 3개월 안에 무엇부터 검증할지 담은 계획을 발표하겠습니다.</div></div>
-<div class="annot"><div class="rlabel">제목 옆(개념 선점)</div><div class="rbody">rPPG가 생소하실 수 있어 한 문장으로 &mdash; <b>몸에 센서를 붙이지 않고 얼굴 영상만으로 심박을 재는 기술</b>입니다. 심장이 뛸 때 피부색이 아주 미세하게 변하는 걸 카메라로 잡아내는 원리예요.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">오프닝</span> 안녕하세요, 지원자 이예지입니다. 오늘은 <b>카메라만으로 심박을 재는 rPPG 기술</b>의 성능이 왜 정체됐는지 원인을 찾고, 3개월 안에 무엇부터 검증할지 담은 계획을 발표하겠습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">제목 옆(개념 선점)</span> rPPG가 생소하실 수 있어 한 문장으로 &mdash; <b>몸에 센서를 붙이지 않고 얼굴 영상만으로 심박을 재는 기술</b>입니다. 심장이 뛸 때 피부색이 아주 미세하게 변하는 걸 카메라로 잡아내는 원리예요.</div></div>
     </div>
   </div>
 </div>
@@ -277,11 +276,11 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">2</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">&#9312; 기술 블록</div><div class="rbody">엑시스트는 카메라&middot;마이크만으로 사람 상태를 분석하는 <b>비접촉 모니터링</b> 회사이고, rPPG는 그중 <b>카메라로 심박을 재는 핵심 기술</b>이라고 짚어줍니다.</div></div>
-<div class="annot"><div class="rlabel">&#9313; 현재 문제 블록</div><div class="rbody">핵심은 '<b>어느 수준 이후 성능이 더 안 오른다</b>'. 이유 후보로 연구실&harr;웹캠 환경 차이(조명&middot;화질&middot;움직임)와 데이터&middot;라벨&middot;전처리&middot;평가 문제를 나열합니다.</div></div>
-<div class="annot"><div class="rlabel">타겟 표</div><div class="rbody">운영자&middot;연구팀&middot;사용자가 각각 겪는 어려움. 여기서 톤은 '누구의 문제인가'를 명확히 하는 것.</div></div>
-<div class="annot"><div class="rlabel">핵심 문제 박스</div><div class="rbody">가장 강조할 문장 &mdash; <b>'모델 탓인지 데이터&middot;과정 탓인지 구분할 기준(재현 가능한 기준 성능)이 없다'</b>. 그리고 '그래서 먼저 파이프라인을 이해하겠다'로 다음 장에 연결합니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">타겟 표</span> <b>Q.</b> 왜 사용자가 아니라 운영자&middot;연구팀이 직접 타겟인가요?<br><b>A.</b> 사용자는 최종 수혜자지만, 지금 당장 판단 기준이 없어 막힌 건 운영자&middot;연구팀입니다. 그들에게 기준을 주면 결과적으로 사용자 경험이 좋아지는 구조라고 답합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">&#9312; 기술 블록</span> 엑시스트는 카메라&middot;마이크만으로 사람 상태를 분석하는 <b>비접촉 모니터링</b> 회사이고, rPPG는 그중 <b>카메라로 심박을 재는 핵심 기술</b>이라고 짚어줍니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">&#9313; 현재 문제 블록</span> 핵심은 '<b>어느 수준 이후 성능이 더 안 오른다</b>'. 이유 후보로 연구실&harr;웹캠 환경 차이(조명&middot;화질&middot;움직임)와 데이터&middot;라벨&middot;전처리&middot;평가 문제를 나열합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">타겟 표</span> 운영자&middot;연구팀&middot;사용자가 각각 겪는 어려움. 여기서 톤은 '누구의 문제인가'를 명확히 하는 것.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">핵심 문제 박스</span> 가장 강조할 문장 &mdash; <b>'모델 탓인지 데이터&middot;과정 탓인지 구분할 기준(재현 가능한 기준 성능)이 없다'</b>. 그리고 '그래서 먼저 파이프라인을 이해하겠다'로 다음 장에 연결합니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 타겟 표</span> <b>Q.</b> 왜 사용자가 아니라 운영자&middot;연구팀이 직접 타겟인가요?<br><b>A.</b> 사용자는 최종 수혜자지만, 지금 당장 판단 기준이 없어 막힌 건 운영자&middot;연구팀입니다. 그들에게 기준을 주면 결과적으로 사용자 경험이 좋아지는 구조라고 답합니다.</div></div>
     </div>
   </div>
 </div>
@@ -338,10 +337,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">3</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">정의&middot;원리&middot;난이도 불릿</div><div class="rbody">원리를 풀어서 &mdash; 심박&rarr;혈류&rarr;<b>피부색 0.5% 미만 미세 변화</b>. '신호 대 잡음비가 낮다'는 건 <b>'진짜 신호는 속삭임, 주변 소음은 크다'</b>로 비유하면 바로 이해됩니다.</div></div>
-<div class="annot"><div class="rlabel">7단계 흐름도</div><div class="rbody">&#9312;촬영&rarr;&#9313;얼굴찾기&rarr;&#9314;색신호&rarr;&#9315;다듬기&rarr;&#9316;심박추정&rarr;&#9317;심박수&rarr;&#9318;정답비교. <b>요리 공정</b>에 비유 &mdash; 어느 단계에서 재료가 상하면 최종 맛이 나빠진다.</div></div>
-<div class="annot"><div class="rlabel">하단 핵심 박스</div><div class="rbody">결론 문장 &mdash; 성능이 안 나온다고 <b>바로 모델(&#9316;) 탓하지 말고, 단계마다 가설을 세워 검증</b>하자. 계획 전체를 관통하는 관점이라 천천히 말합니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">원리 불릿</span> <b>Q.</b> 정말 일반 카메라로 그런 미세한 변화가 잡히나요?<br><b>A.</b> 눈엔 안 보여도 카메라 센서는 픽셀 단위 색값 변화를 기록합니다. 다만 신호가 약해 조명&middot;움직임에 쉽게 묻히고, 그래서 이번 과제가 '어떻게 안정적으로 뽑아낼까'를 다룹니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">정의&middot;원리&middot;난이도 불릿</span> 원리를 풀어서 &mdash; 심박&rarr;혈류&rarr;<b>피부색 0.5% 미만 미세 변화</b>. '신호 대 잡음비가 낮다'는 건 <b>'진짜 신호는 속삭임, 주변 소음은 크다'</b>로 비유하면 바로 이해됩니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">7단계 흐름도</span> &#9312;촬영&rarr;&#9313;얼굴찾기&rarr;&#9314;색신호&rarr;&#9315;다듬기&rarr;&#9316;심박추정&rarr;&#9317;심박수&rarr;&#9318;정답비교. <b>요리 공정</b>에 비유 &mdash; 어느 단계에서 재료가 상하면 최종 맛이 나빠진다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">하단 핵심 박스</span> 결론 문장 &mdash; 성능이 안 나온다고 <b>바로 모델(&#9316;) 탓하지 말고, 단계마다 가설을 세워 검증</b>하자. 계획 전체를 관통하는 관점이라 천천히 말합니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 원리 불릿</span> <b>Q.</b> 정말 일반 카메라로 그런 미세한 변화가 잡히나요?<br><b>A.</b> 눈엔 안 보여도 카메라 센서는 픽셀 단위 색값 변화를 기록합니다. 다만 신호가 약해 조명&middot;움직임에 쉽게 묻히고, 그래서 이번 과제가 '어떻게 안정적으로 뽑아낼까'를 다룹니다.</div></div>
     </div>
   </div>
 </div>
@@ -394,10 +393,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">4</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">표 전체</div><div class="rbody">각 단계가 어떻게 성능을 갉아먹는지 정리한 표. 전부 읽지 말고 <b>두 지점만</b> 강조합니다.</div></div>
-<div class="annot"><div class="rlabel">&#9312; 촬영 행</div><div class="rbody">웹캠 <b>자동 보정(밝기&middot;색)</b>이 우리가 읽어야 할 미세 신호까지 지울 수 있다.</div></div>
-<div class="annot"><div class="rlabel">&#9316;&middot;&#9318; 행 (강조)</div><div class="rbody">가장 중요한 함정 &mdash; &#9316;는 <b>도메인 갭</b>(학습&harr;실제 환경 차이)이 '모델이 나쁘다'로 오해되기 쉽고, &#9318;은 <b>시간 몇백 ms 어긋남</b>으로 채점이 나빠 보인다. 둘 다 <b>모델이 아닌데 모델 탓처럼 보이는</b> 지점.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">&#9316; 행</span> <b>Q.</b> 도메인 갭이 정확히 뭔가요?<br><b>A.</b> 모델이 학습 때 본 환경(좋은 조명&middot;화질)과 실제 쓰이는 환경(제각각 웹캠)이 달라 성능이 떨어지는 현상. '학교에서만 공부한 사람이 실전에서 헤맨다'로 설명합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">표 전체</span> 각 단계가 어떻게 성능을 갉아먹는지 정리한 표. 전부 읽지 말고 <b>두 지점만</b> 강조합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">&#9312; 촬영 행</span> 웹캠 <b>자동 보정(밝기&middot;색)</b>이 우리가 읽어야 할 미세 신호까지 지울 수 있다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">&#9316;&middot;&#9318; 행 (강조)</span> 가장 중요한 함정 &mdash; &#9316;는 <b>도메인 갭</b>(학습&harr;실제 환경 차이)이 '모델이 나쁘다'로 오해되기 쉽고, &#9318;은 <b>시간 몇백 ms 어긋남</b>으로 채점이 나빠 보인다. 둘 다 <b>모델이 아닌데 모델 탓처럼 보이는</b> 지점.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; &#9316; 행</span> <b>Q.</b> 도메인 갭이 정확히 뭔가요?<br><b>A.</b> 모델이 학습 때 본 환경(좋은 조명&middot;화질)과 실제 쓰이는 환경(제각각 웹캠)이 달라 성능이 떨어지는 현상. '학교에서만 공부한 사람이 실전에서 헤맨다'로 설명합니다.</div></div>
     </div>
   </div>
 </div>
@@ -514,10 +513,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">5</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">3축 헤더</div><div class="rbody">후보 10개를 <b>영향도(원인이면 얼마나 큰가)&middot;불확실성(원인인지 애매한 정도)&middot;실행비용(검증 시간&middot;돈)</b> 세 잣대로 평가했다고 설명합니다.</div></div>
-<div class="annot"><div class="rlabel">파란 5개 행</div><div class="rbody">우선 검증 5개. 원칙은 <b>싸게 확인되고, 원인일 때 파급이 큰 것부터</b>.</div></div>
-<div class="annot"><div class="rlabel">2행 (모델 재학습)</div><div class="rbody">영향은 크지만 <b>비용이 가장 커서</b> 우선순위에서 뒤로. '성급히 모델부터 손대지 않는다'는 메시지.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">파란 5개 행</span> <b>Q.</b> 영향도가 '보통'인 항목(동기화&middot;SQI)을 왜 우선으로 두나요?<br><b>A.</b> 우선순위는 영향도가 아니라 <b>영향도 대비 비용</b>으로 정했습니다. 게다가 동기화&middot;분할은 채점을 믿게 만드는 <b>전제 조건</b>이라, 이걸 안 하면 뒤 실험 결과를 못 믿습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">3축 헤더</span> 후보 10개를 <b>영향도(원인이면 얼마나 큰가)&middot;불확실성(원인인지 애매한 정도)&middot;실행비용(검증 시간&middot;돈)</b> 세 잣대로 평가했다고 설명합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">파란 5개 행</span> 우선 검증 5개. 원칙은 <b>싸게 확인되고, 원인일 때 파급이 큰 것부터</b>.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">2행 (모델 재학습)</span> 영향은 크지만 <b>비용이 가장 커서</b> 우선순위에서 뒤로. '성급히 모델부터 손대지 않는다'는 메시지.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 파란 5개 행</span> <b>Q.</b> 영향도가 '보통'인 항목(동기화&middot;SQI)을 왜 우선으로 두나요?<br><b>A.</b> 우선순위는 영향도가 아니라 <b>영향도 대비 비용</b>으로 정했습니다. 게다가 동기화&middot;분할은 채점을 믿게 만드는 <b>전제 조건</b>이라, 이걸 안 하면 뒤 실험 결과를 못 믿습니다.</div></div>
     </div>
   </div>
 </div>
@@ -577,10 +576,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">6</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">#0 Baseline 막대(남색)</div><div class="rbody">가설 검증이 아니라 <b>채점 기준을 먼저 만드는 전제 작업</b>. '자를 먼저 만들어야 뭐가 좋아졌는지 잰다'.</div></div>
-<div class="annot"><div class="rlabel">저비용 가설 막대(2~6주)</div><div class="rbody">재수집이 필요 없는 저비용 가설(분할&middot;동기화&middot;전처리&middot;실패처리)을 <b>먼저</b> 배치.</div></div>
-<div class="annot"><div class="rlabel">AWB 막대(6~9주)</div><div class="rbody">영향은 크지만 <b>새 촬영이 필요해 비용이 커서</b> 뒤로. 10~12주는 결과를 보고 방향을 다시 잡는 예비 기간.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">전체 순서</span> <b>Q.</b> AWB가 우선순위 1번인데 왜 타임라인에선 뒤에 있나요?<br><b>A.</b> '중요도'와 '실행 순서'를 분리했습니다. 싸게 배제할 채점&middot;과정 오류를 먼저 걷어낸 뒤 남는 진짜 환경 원인(AWB)을 겨냥하는 게 효율적이라서입니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">#0 Baseline 막대(남색)</span> 가설 검증이 아니라 <b>채점 기준을 먼저 만드는 전제 작업</b>. '자를 먼저 만들어야 뭐가 좋아졌는지 잰다'.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">저비용 가설 막대(2~6주)</span> 재수집이 필요 없는 저비용 가설(분할&middot;동기화&middot;전처리&middot;실패처리)을 <b>먼저</b> 배치.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">AWB 막대(6~9주)</span> 영향은 크지만 <b>새 촬영이 필요해 비용이 커서</b> 뒤로. 10~12주는 결과를 보고 방향을 다시 잡는 예비 기간.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 전체 순서</span> <b>Q.</b> AWB가 우선순위 1번인데 왜 타임라인에선 뒤에 있나요?<br><b>A.</b> '중요도'와 '실행 순서'를 분리했습니다. 싸게 배제할 채점&middot;과정 오류를 먼저 걷어낸 뒤 남는 진짜 환경 원인(AWB)을 겨냥하는 게 효율적이라서입니다.</div></div>
     </div>
   </div>
 </div>
@@ -633,9 +632,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">7</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">표 전체</div><div class="rbody">각 실험을 <b>(1)~(4) 실행 단계와 결과물</b>로 쪼갠 표. 'Baseline은 이렇게 4단계로 실행한다'처럼 한 줄만 예로 듭니다.</div></div>
-<div class="annot"><div class="rlabel">하단 안내(기각 시 전환)</div><div class="rbody">강조 문장 &mdash; <b>기준 미달&middot;기각 시 바로 다음 후보로 넘어간다</b>. 계획이 고정이 아니라 결과에 따라 바뀌는 구조.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">표 전체</span> <b>Q.</b> 3개월 안에 5개를 다 못 하면요?<br><b>A.</b> 다 하는 게 목표가 아니라 <b>순서대로 배제해 병목을 좁히는 것</b>이 목표입니다. 예비 기간에 결과를 보고 우선순위를 다시 잡습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">표 전체</span> 각 실험을 <b>(1)~(4) 실행 단계와 결과물</b>로 쪼갠 표. 'Baseline은 이렇게 4단계로 실행한다'처럼 한 줄만 예로 듭니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">하단 안내(기각 시 전환)</span> 강조 문장 &mdash; <b>기준 미달&middot;기각 시 바로 다음 후보로 넘어간다</b>. 계획이 고정이 아니라 결과에 따라 바뀌는 구조.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 표 전체</span> <b>Q.</b> 3개월 안에 5개를 다 못 하면요?<br><b>A.</b> 다 하는 게 목표가 아니라 <b>순서대로 배제해 병목을 좁히는 것</b>이 목표입니다. 예비 기간에 결과를 보고 우선순위를 다시 잡습니다.</div></div>
     </div>
   </div>
 </div>
@@ -674,10 +673,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">8</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">공통 안내</div><div class="rbody">여기부터 8~13장은 <b>실험 설계 / 평가 지표 / 판단 기준 / 근거</b> 같은 틀로 각 가설을 설계한 부분이라 빠르게 넘긴다고 말합니다.</div></div>
-<div class="annot"><div class="rlabel">실험 설계 행</div><div class="rbody">핵심 한 가지 &mdash; <b>학습이 필요 없는 전통기법(CHROM&middot;POS)을 같이 측정</b>. 이게 딥러닝과 비슷하거나 나으면 '모델이 아니라 데이터&middot;과정 문제'라는 신호.</div></div>
-<div class="annot"><div class="rlabel">근거 행</div><div class="rbody">표준 평가 도구 rPPG-Toolbox를 참조 구현으로 삼았다고 짚어줍니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">실험 설계 행</span> <b>Q.</b> 전통기법이 딥러닝을 이기면 어떻게 하나요?<br><b>A.</b> 그게 오히려 핵심 발견입니다. 개선 방향을 모델이 아닌 파이프라인으로 돌리게 되는 강한 증거입니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">공통 안내</span> 여기부터 8~13장은 <b>실험 설계 / 평가 지표 / 판단 기준 / 근거</b> 같은 틀로 각 가설을 설계한 부분이라 빠르게 넘긴다고 말합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">실험 설계 행</span> 핵심 한 가지 &mdash; <b>학습이 필요 없는 전통기법(CHROM&middot;POS)을 같이 측정</b>. 이게 딥러닝과 비슷하거나 나으면 '모델이 아니라 데이터&middot;과정 문제'라는 신호.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">근거 행</span> 표준 평가 도구 rPPG-Toolbox를 참조 구현으로 삼았다고 짚어줍니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 실험 설계 행</span> <b>Q.</b> 전통기법이 딥러닝을 이기면 어떻게 하나요?<br><b>A.</b> 그게 오히려 핵심 발견입니다. 개선 방향을 모델이 아닌 파이프라인으로 돌리게 되는 강한 증거입니다.</div></div>
     </div>
   </div>
 </div>
@@ -716,10 +715,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">9</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">실험 설계 행</div><div class="rbody"><b>시험 문제를 미리 본 학생</b> 비유 &mdash; 같은 사람 영상이 학습&middot;평가에 섞이면(누수) 성능이 부풀려 보인다. 그래서 사람 단위로 완전히 분리해 다시 평가.</div></div>
-<div class="annot"><div class="rlabel">판단 기준 행</div><div class="rbody">분리 후 성능이 뚝 떨어지면 &rarr; 지금까지가 착시. 이 분리셋을 새 baseline으로 삼는다.</div></div>
-<div class="annot"><div class="rlabel">근거 행</div><div class="rbody">이건 rPPG 벤치마크 논문(rPPG-Toolbox)이 <b>표준 문제로 지적</b>한 부분 &mdash; '기본을 왜 넣었냐'는 반문을 근거로 막습니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">실험 설계 행</span> <b>Q.</b> 이건 너무 기본 아닌가요? 연구자들도 아는 문제일 텐데.<br><b>A.</b> 개념은 기본이지만 <b>자체 파이프라인에서 실제로 지켜지는지는 확인 전엔 모릅니다.</b> 피험자가 적은 rPPG 데이터에선 누수 영향이 크고, 확인 비용은 거의 0이라 먼저 배제합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">실험 설계 행</span> <b>시험 문제를 미리 본 학생</b> 비유 &mdash; 같은 사람 영상이 학습&middot;평가에 섞이면(누수) 성능이 부풀려 보인다. 그래서 사람 단위로 완전히 분리해 다시 평가.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">판단 기준 행</span> 분리 후 성능이 뚝 떨어지면 &rarr; 지금까지가 착시. 이 분리셋을 새 baseline으로 삼는다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">근거 행</span> 이건 rPPG 벤치마크 논문(rPPG-Toolbox)이 <b>표준 문제로 지적</b>한 부분 &mdash; '기본을 왜 넣었냐'는 반문을 근거로 막습니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 실험 설계 행</span> <b>Q.</b> 이건 너무 기본 아닌가요? 연구자들도 아는 문제일 텐데.<br><b>A.</b> 개념은 기본이지만 <b>자체 파이프라인에서 실제로 지켜지는지는 확인 전엔 모릅니다.</b> 피험자가 적은 rPPG 데이터에선 누수 영향이 크고, 확인 비용은 거의 0이라 먼저 배제합니다.</div></div>
     </div>
   </div>
 </div>
@@ -758,9 +757,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">10</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">부제&middot;실험 설계 행</div><div class="rbody">'<b>모델이 아닌 채점의 오류</b>' 프레임. 영상과 정답 심박계의 시계가 몇백 ms만 어긋나도 점수가 나빠 보인다 &rarr; offset&middot;드리프트를 찾아 보정 후 재채점.</div></div>
-<div class="annot"><div class="rlabel">근거 행</div><div class="rbody">Mironenko(2020): 롤링셔터로 0.02초 위상 편이, 윈도우 크기에 따라 HR 4~10bpm 차이 &mdash; 동기화&middot;조건을 명시해야 한다는 근거.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">실험 설계 행</span> <b>Q.</b> 겨우 몇백 ms가 그렇게 큰가요?<br><b>A.</b> 심박수 평균에는 작아도, <b>박동 단위(HRV&middot;파형 상관) 지표</b>에서는 치명적입니다. 그리고 이걸 배제해야 이후 채점을 전부 믿을 수 있어 먼저 합니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">부제&middot;실험 설계 행</span> '<b>모델이 아닌 채점의 오류</b>' 프레임. 영상과 정답 심박계의 시계가 몇백 ms만 어긋나도 점수가 나빠 보인다 &rarr; offset&middot;드리프트를 찾아 보정 후 재채점.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">근거 행</span> Mironenko(2020): 롤링셔터로 0.02초 위상 편이, 윈도우 크기에 따라 HR 4~10bpm 차이 &mdash; 동기화&middot;조건을 명시해야 한다는 근거.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 실험 설계 행</span> <b>Q.</b> 겨우 몇백 ms가 그렇게 큰가요?<br><b>A.</b> 심박수 평균에는 작아도, <b>박동 단위(HRV&middot;파형 상관) 지표</b>에서는 치명적입니다. 그리고 이걸 배제해야 이후 채점을 전부 믿을 수 있어 먼저 합니다.</div></div>
     </div>
   </div>
 </div>
@@ -799,9 +798,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">11</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">실험 설계 행</div><div class="rbody"><b>같은 레시피로 요리해야 같은 맛</b> 비유 &mdash; 학습 때와 실제 때 입력 손질법(정규화&middot;크기&middot;색)이 다르면 모델이 멀쩡해도 성능이 깎인다. 대부분 코드 대조라 거의 공짜.</div></div>
-<div class="annot"><div class="rlabel">판단 기준 행</div><div class="rbody">정렬 후 좋아지면 원인 확정, 아니면 모델&middot;데이터로 이동. '<b>저비용&middot;고효과</b>라 모델 손대기 전에 먼저 본다'.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">실험 설계 행</span> <b>Q.</b> 이런 전처리 불일치가 실제로 흔한가요?<br><b>A.</b> 연구 코드가 실서비스로 옮겨질 때 자주 생깁니다. 비용이 거의 없으니 확인 안 할 이유가 없습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">실험 설계 행</span> <b>같은 레시피로 요리해야 같은 맛</b> 비유 &mdash; 학습 때와 실제 때 입력 손질법(정규화&middot;크기&middot;색)이 다르면 모델이 멀쩡해도 성능이 깎인다. 대부분 코드 대조라 거의 공짜.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">판단 기준 행</span> 정렬 후 좋아지면 원인 확정, 아니면 모델&middot;데이터로 이동. '<b>저비용&middot;고효과</b>라 모델 손대기 전에 먼저 본다'.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 실험 설계 행</span> <b>Q.</b> 이런 전처리 불일치가 실제로 흔한가요?<br><b>A.</b> 연구 코드가 실서비스로 옮겨질 때 자주 생깁니다. 비용이 거의 없으니 확인 안 할 이유가 없습니다.</div></div>
     </div>
   </div>
 </div>
@@ -840,10 +839,10 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">12</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">실험 설계 행</div><div class="rbody">애초에 못 잰 구간까지 평균에 넣으면 실패가 점수를 깎는다 &rarr; <b>신호 품질 점수(SQI)</b>로 저품질 구간을 걸러내거나 재측정.</div></div>
-<div class="annot"><div class="rlabel">판단 기준 행</div><div class="rbody">'얼마나 걸러낼지'와 '정확도'는 맞바꿈 &rarr; 균형점을 찾는다. 이건 <b>실제 서비스 품질 기준</b>으로도 쓰인다.</div></div>
-<div class="annot"><div class="rlabel">근거 행</div><div class="rbody">논문(npj Biosensing 2024)에서 <b>왜도(skewness) 지표</b>가 품질 판별에 가장 좋았다(F1 86/87/79%).</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">판단 기준 행</span> <b>Q.</b> 저품질을 걸러내면 실패를 숨기는 것 아닌가요?<br><b>A.</b> 숨기는 게 아니라 <b>성공률&middot;재측정률을 따로 보고</b>합니다. '언제 믿을 수 있는지'를 정하는 것이라 오히려 정직한 지표가 됩니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">실험 설계 행</span> 애초에 못 잰 구간까지 평균에 넣으면 실패가 점수를 깎는다 &rarr; <b>신호 품질 점수(SQI)</b>로 저품질 구간을 걸러내거나 재측정.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">판단 기준 행</span> '얼마나 걸러낼지'와 '정확도'는 맞바꿈 &rarr; 균형점을 찾는다. 이건 <b>실제 서비스 품질 기준</b>으로도 쓰인다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">근거 행</span> 논문(npj Biosensing 2024)에서 <b>왜도(skewness) 지표</b>가 품질 판별에 가장 좋았다(F1 86/87/79%).</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 판단 기준 행</span> <b>Q.</b> 저품질을 걸러내면 실패를 숨기는 것 아닌가요?<br><b>A.</b> 숨기는 게 아니라 <b>성공률&middot;재측정률을 따로 보고</b>합니다. '언제 믿을 수 있는지'를 정하는 것이라 오히려 정직한 지표가 됩니다.</div></div>
     </div>
   </div>
 </div>
@@ -882,9 +881,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">13</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">실험 설계 행</div><div class="rbody"><b>자동 보정을 끈 상태 vs 켠 상태를 같은 사람으로 나란히 촬영</b>해 비교. 영향&middot;불확실성이 커서 검증 가치가 가장 크지만, 새 촬영이라 뒤에 배치.</div></div>
-<div class="annot"><div class="rlabel">근거 행</div><div class="rbody">Odinaev(2023): <b>고정 노출이 자동 노출보다 항상 같거나 우수</b> &mdash; 대조 수집 설계와 방법론이 일치.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">판단 기준 행</span> <b>Q.</b> 왜 이게 도메인 갭의 '핵심'인가요?<br><b>A.</b> 자동 보정은 프레임마다 밝기&middot;색을 바꿔 미세 신호를 덮습니다. 연구실&harr;웹캠 차이를 만드는 가장 유력한 물리적 원인이라 그렇게 봤습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">실험 설계 행</span> <b>자동 보정을 끈 상태 vs 켠 상태를 같은 사람으로 나란히 촬영</b>해 비교. 영향&middot;불확실성이 커서 검증 가치가 가장 크지만, 새 촬영이라 뒤에 배치.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">근거 행</span> Odinaev(2023): <b>고정 노출이 자동 노출보다 항상 같거나 우수</b> &mdash; 대조 수집 설계와 방법론이 일치.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 판단 기준 행</span> <b>Q.</b> 왜 이게 도메인 갭의 '핵심'인가요?<br><b>A.</b> 자동 보정은 프레임마다 밝기&middot;색을 바꿔 미세 신호를 덮습니다. 연구실&harr;웹캠 차이를 만드는 가장 유력한 물리적 원인이라 그렇게 봤습니다.</div></div>
     </div>
   </div>
 </div>
@@ -944,9 +943,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">14</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">협업 구조 표</div><div class="rbody">혼자 못 하니 <b>연구(모델)&middot;데이터(수집&middot;라벨)&middot;웹개발(촬영 조건)</b>과 함께 진행. 각자와 만들 공동 산출물을 정리.</div></div>
-<div class="annot"><div class="rlabel">위험 대응 표</div><div class="rbody">안 될 때의 대비책을 <b>실험 번호와 연결</b>. 예: 자동보정 못 끄면(#1) 후처리 보정, 저비용 가설 전부 틀리면(#3~#6) 그때 모델 재학습.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">위험 대응 표</span> <b>Q.</b> 이 계획에서 가장 큰 리스크는 무엇인가요?<br><b>A.</b> AWB 실험의 재수집 자원과 GT 동기화 확보입니다. 그래서 재수집 없는 저비용 가설을 앞에 배치해 일정을 방어하도록 설계했습니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">협업 구조 표</span> 혼자 못 하니 <b>연구(모델)&middot;데이터(수집&middot;라벨)&middot;웹개발(촬영 조건)</b>과 함께 진행. 각자와 만들 공동 산출물을 정리.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">위험 대응 표</span> 안 될 때의 대비책을 <b>실험 번호와 연결</b>. 예: 자동보정 못 끄면(#1) 후처리 보정, 저비용 가설 전부 틀리면(#3~#6) 그때 모델 재학습.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 위험 대응 표</span> <b>Q.</b> 이 계획에서 가장 큰 리스크는 무엇인가요?<br><b>A.</b> AWB 실험의 재수집 자원과 GT 동기화 확보입니다. 그래서 재수집 없는 저비용 가설을 앞에 배치해 일정을 방어하도록 설계했습니다.</div></div>
     </div>
   </div>
 </div>
@@ -984,9 +983,9 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">15</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">표 전체</div><div class="rbody">AI 활용(자료 정리&middot;가설 초안&middot;논문 검색)과 <b>직접 판단(채택&middot;수정&middot;제외)</b>을 구분해 투명하게 정리.</div></div>
-<div class="annot"><div class="rlabel">우선순위&middot;지표 행 (강조)</div><div class="rbody">대표 사례 &mdash; AI가 동기화 영향도를 '높음'으로 줬는데 <b>제가 지표 특성을 따져 '보통'으로 정정</b>. 논문 수치 오류도 원문 대조로 잡아냄. 'AI를 그대로 믿지 않는다'는 원칙의 실제 증거.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><span class="rl2">표 전체</span> <b>Q.</b> AI를 얼마나 썼고 본인 기여는 무엇인가요?<br><b>A.</b> 속도(정리&middot;초안&middot;검색)는 AI로 높이고, <b>구조 설계&middot;우선순위&middot;수치 검증은 직접</b> 했습니다. 과장된 평가를 바로잡고 근거 오류를 잡은 것이 대표 기여입니다.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">표 전체</span> AI 활용(자료 정리&middot;가설 초안&middot;논문 검색)과 <b>직접 판단(채택&middot;수정&middot;제외)</b>을 구분해 투명하게 정리.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">우선순위&middot;지표 행 (강조)</span> 대표 사례 &mdash; AI가 동기화 영향도를 '높음'으로 줬는데 <b>제가 지표 특성을 따져 '보통'으로 정정</b>. 논문 수치 오류도 원문 대조로 잡아냄. 'AI를 그대로 믿지 않는다'는 원칙의 실제 증거.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 표 전체</span> <b>Q.</b> AI를 얼마나 썼고 본인 기여는 무엇인가요?<br><b>A.</b> 속도(정리&middot;초안&middot;검색)는 AI로 높이고, <b>구조 설계&middot;우선순위&middot;수치 검증은 직접</b> 했습니다. 과장된 평가를 바로잡고 근거 오류를 잡은 것이 대표 기여입니다.</div></div>
     </div>
   </div>
 </div>
@@ -1047,16 +1046,16 @@ h2.sec{font-size:19px;color:var(--accent-dark);border-bottom:2px solid var(--acc
     <div class="pagenum">16</div>
   </section></div>
     <div class="annots"><div class="annots-title">슬라이드 영역별 발표 첨삭 &middot; &#10067;는 질문 나올 지점</div>
-<div class="annot"><div class="rlabel">사이클 흐름도</div><div class="rbody">이번 결과물(기준 성능&middot;병목 규명&middot;의사결정 기준)은 끝이 아니라 <b>개선&rarr;재검증&rarr;다음 개선</b>으로 도는 사이클의 첫 바퀴.</div></div>
-<div class="annot"><div class="rlabel">타겟별 3카드</div><div class="rbody">2장의 세 타겟과 수미상관 &mdash; 연구팀은 근거로 판단, 운영자는 믿을 기준으로 판단, 사용자는 안정적 측정. '일회성 진단이 아니라 지속 가능한 체계'로 마무리.</div></div>
-<div class="annot"><div class="rlabel">클로징</div><div class="rbody">마지막 멘트 &mdash; '일회성 진단이 아니라 지속 가능한 개선 체계를 만드는 것이 목표입니다. 감사합니다.'</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">사이클 흐름도</span> 이번 결과물(기준 성능&middot;병목 규명&middot;의사결정 기준)은 끝이 아니라 <b>개선&rarr;재검증&rarr;다음 개선</b>으로 도는 사이클의 첫 바퀴.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">타겟별 3카드</span> 2장의 세 타겟과 수미상관 &mdash; 연구팀은 근거로 판단, 운영자는 믿을 기준으로 판단, 사용자는 안정적 측정. '일회성 진단이 아니라 지속 가능한 체계'로 마무리.</div></div>
+<div class="annot"><div class="rbody"><span class="rtag">클로징</span> 마지막 멘트 &mdash; '일회성 진단이 아니라 지속 가능한 개선 체계를 만드는 것이 목표입니다. 감사합니다.'</div></div>
     </div>
   </div>
 </div>
 <h2 class="sec">그 외 교차 질문 (마무리 대비)</h2>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><b>Q.</b> rPPG가 접촉식만큼 정확한가요?<br><b>A.</b> 조건이 좋으면 몇 bpm 수준이지만 실제 웹캠에선 흔들립니다. 그래서 '언제 믿고 언제 못 믿는지'를 성공률&middot;품질 기준으로 정하는 게 이 계획의 목표입니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><b>Q.</b> 지표로 MAE 말고 여러 개를 쓰는 이유는?<br><b>A.</b> MAE 하나로는 편향&middot;구간별 실패를 놓칩니다. bias&middot;Bland-Altman&middot;성공률을 함께 봐야 '왜 나쁜지'를 제대로 진단합니다.</div></div>
-<div class="annot q"><div class="rlabel">&#10067; 예상질문</div><div class="rbody"><b>Q.</b> 왜 모델 개선부터 안 하나요?<br><b>A.</b> 채점 기준이 틀려 있으면 개선 효과를 잴 수 없고, 데이터&middot;과정 문제는 거의 공짜로 확인됩니다. 가장 비싼 모델 재학습을 원인도 모른 채 먼저 쓰지 않으려는 것입니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 예상질문</span> <b>Q.</b> rPPG가 접촉식만큼 정확한가요?<br><b>A.</b> 조건이 좋으면 몇 bpm 수준이지만 실제 웹캠에선 흔들립니다. 그래서 '언제 믿고 언제 못 믿는지'를 성공률&middot;품질 기준으로 정하는 게 이 계획의 목표입니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 예상질문</span> <b>Q.</b> 지표로 MAE 말고 여러 개를 쓰는 이유는?<br><b>A.</b> MAE 하나로는 편향&middot;구간별 실패를 놓칩니다. bias&middot;Bland-Altman&middot;성공률을 함께 봐야 '왜 나쁜지'를 제대로 진단합니다.</div></div>
+<div class="annot q"><div class="rbody"><span class="rtag q">&#10067; 예상질문</span> <b>Q.</b> 왜 모델 개선부터 안 하나요?<br><b>A.</b> 채점 기준이 틀려 있으면 개선 효과를 잴 수 없고, 데이터&middot;과정 문제는 거의 공짜로 확인됩니다. 가장 비싼 모델 재학습을 원인도 모른 채 먼저 쓰지 않으려는 것입니다.</div></div>
 
 </div>
 </body>
